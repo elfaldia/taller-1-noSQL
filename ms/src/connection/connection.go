@@ -9,10 +9,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func connectToDataBase() (*mongo.Client, error) {
+func ConnectToDataBase() (*mongo.Client, error) {
 
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI("mongodb+srv://diegomartinezzr:<db_password>@cluster.cl2lp.mongodb.net/?retryWrites=true&w=majority&appName=cluster").SetServerAPIOptions(serverAPI)
+	opts := options.Client().ApplyURI("mongodb+srv://diegomartinezzr:MlUbLvrzfEYUDu6O@cluster.cl2lp.mongodb.net/?retryWrites=true&w=majority&appName=cluster").SetServerAPIOptions(serverAPI)
 
 	client, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
