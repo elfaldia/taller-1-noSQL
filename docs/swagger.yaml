@@ -1,0 +1,28 @@
+definitions:
+  response.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      status:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /curso:
+    get:
+      consumes:
+      - application/json
+      description: get cursos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Devuelve todos los carritos de la base de datos
+      tags:
+      - curso
+swagger: "2.0"

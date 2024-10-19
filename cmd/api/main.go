@@ -6,12 +6,15 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/elfaldia/taller-noSQL/docs"
 	"github.com/elfaldia/taller-noSQL/internal/controller"
 	"github.com/elfaldia/taller-noSQL/internal/db"
 	"github.com/elfaldia/taller-noSQL/internal/repository"
 	"github.com/elfaldia/taller-noSQL/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
@@ -36,16 +39,8 @@ func main() {
 	cursoController := controller.NewCursoController(cursoService)
 
 	routes := gin.Default()
-	routes.GET("/", func(ctx *gin.Context) {
-		res := struct {
-			Code    int    `json:"code"`
-			Message string `json:"message"`
-		}{
-			Code:    200,
-			Message: "Hola Mundo",
-		}
-		ctx.JSON(http.StatusOK, res)
-	})
+	docs.SwaggerInfo.BasePath = ""
+	routes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	CursoRouter(routes, cursoController)
 
 	server := &http.Server{

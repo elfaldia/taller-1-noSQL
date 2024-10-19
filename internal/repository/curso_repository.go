@@ -29,6 +29,7 @@ func NewCursoRepositoryImpl(cursoCollection *mongo.Collection) CursoRepository {
 
 // FindAll implements CursoRepository.
 func (c *CursoRepositoryImpl) FindAll() ([]model.Curso, error) {
+
 	cursor, err := c.CursoCollection.Find(context.TODO(), bson.D{})
 	if err != nil {
 		return nil, err

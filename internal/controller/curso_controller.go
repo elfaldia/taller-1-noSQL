@@ -16,6 +16,14 @@ func NewCursoController(service service.CursoService) *CursoController {
 	return &CursoController{CursoService: service}
 }
 
+// @BasePath /curso
+// @Summary Devuelve todos los carritos de la base de datos
+// @Description get cursos
+// @Tags curso
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.Response
+// @Router /curso [get]
 func (controller *CursoController) FindAll(ctx *gin.Context) {
 	data, err := controller.CursoService.FindAll()
 
