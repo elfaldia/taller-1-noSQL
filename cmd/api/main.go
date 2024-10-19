@@ -6,8 +6,12 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/elfaldia/taller-noSQL/internal/controller"
 	"github.com/elfaldia/taller-noSQL/internal/db"
+	"github.com/elfaldia/taller-noSQL/internal/repository"
+	"github.com/elfaldia/taller-noSQL/internal/service"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator"
 )
 
 func main() {
@@ -21,8 +25,16 @@ func main() {
 		}
 	}()
 
+	validate := validator.New()
+	db := client.Database("taller-nosql")
+	cursoCollection := db.Collection("curso")
 
-	
+	cursoRepository := repository.NewCursoRepositoryImpl(cursoCollection)
+
+	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, validate)
+
+	cursoController := controller.NewCursoController(cursoService)
+
 	routes := gin.Default()
 	routes.GET("/", func(ctx *gin.Context) {
 		res := struct {
@@ -34,6 +46,7 @@ func main() {
 		}
 		ctx.JSON(http.StatusOK, res)
 	})
+	CursoRouter(routes, cursoController)
 
 	server := &http.Server{
 		Addr:           ":8080",
