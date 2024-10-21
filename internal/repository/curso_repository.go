@@ -13,8 +13,8 @@ import (
 type CursoRepository interface {
 	FindAll() ([]model.Curso, error)
 	FindById(cursoId string) (model.Curso, error)
-	InsertOne(model.Curso) (model.Curso, error)
-	InsertMany([]model.Curso) ([]model.Curso, error)
+	InsertOne(curso model.Curso) (model.Curso, error)
+	InsertMany(cursos []model.Curso) ([]model.Curso, error)
 
 	// seguir ...
 }
@@ -62,8 +62,24 @@ func (c *CursoRepositoryImpl) FindById(_id string) (model.Curso, error) {
 }
 
 // InsertMany implements CursoRepository.
-func (c *CursoRepositoryImpl) InsertMany([]model.Curso) ([]model.Curso, error) {
-	panic("a")
+func (c *CursoRepositoryImpl) InsertMany(cursos []model.Curso) ([]model.Curso, error) {
+	var cursosInsertados []model.Curso
+	var documentos []interface{}
+
+	for _, curso := range cursos {
+		documentos = append(documentos, curso)
+	}
+
+	resultado, err := c.CursoCollection.InsertMany(context.TODO(), documentos)
+	if err != nil {
+		return nil, err
+	}
+
+	for i, id := range resultado.InsertedIDs {
+		cursos[i].Id = id.(primitive.ObjectID)
+		cursosInsertados = append(cursosInsertados, cursos[i])
+	}
+	return cursosInsertados, nil
 }
 
 // InsertOne implements CursoRepository.
