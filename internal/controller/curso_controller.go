@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 
+	"github.com/elfaldia/taller-noSQL/internal/request"
 	"github.com/elfaldia/taller-noSQL/internal/response"
 	"github.com/elfaldia/taller-noSQL/internal/service"
 	"github.com/gin-gonic/gin"
@@ -63,9 +64,59 @@ func (controller *CursoController) FindById(ctx *gin.Context) {
 }
 
 func (controller *CursoController) CreateCurso(ctx *gin.Context) {
-	panic("falta")
+	var req request.CreateCursoRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, response.ErrorResponse{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	err := controller.CursoService.CreateCurso(req)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, response.ErrorResponse{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	res := response.Response{
+		Code:   http.StatusCreated,
+		Status: "Created",
+		Data:   nil,
+	}
+	ctx.JSON(http.StatusCreated, res)
 }
 
 func (controller *CursoController) CreateManyCurso(ctx *gin.Context) {
-	panic("faltaaa")
+
+	var req request.CreateManyCursoRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, response.ErrorResponse{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	err := controller.CursoService.CreateManyCursos(req)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, response.ErrorResponse{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	res := response.Response{
+		Code:   http.StatusCreated,
+		Status: "Created",
+		Data:   nil,
+	}
+	ctx.JSON(http.StatusCreated, res)
+
 }

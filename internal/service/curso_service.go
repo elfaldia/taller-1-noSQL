@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 
+	"github.com/elfaldia/taller-noSQL/internal/model"
 	"github.com/elfaldia/taller-noSQL/internal/repository"
 	"github.com/elfaldia/taller-noSQL/internal/request"
 	"github.com/elfaldia/taller-noSQL/internal/response"
@@ -72,11 +73,29 @@ func (c *CursoServiceImpl) FindById(_id string) (curso response.CursoReponse, er
 }
 
 // InsertMany implements CursoService.
-func (c *CursoServiceImpl) CreateManyCursos(request.CreateManyCursoRequest) error {
+func (c *CursoServiceImpl) CreateManyCursos(req request.CreateManyCursoRequest) error {
 	panic("unimplemented")
 }
 
 // InsertOne implements CursoService.
-func (c *CursoServiceImpl) CreateCurso(request.CreateCursoRequest) error {
-	panic("unimplemented")
+func (c *CursoServiceImpl) CreateCurso(req request.CreateCursoRequest) error {
+	err := c.Validate.Struct(req)
+	if err != nil {
+		return err
+	}
+
+	curso := model.Curso{
+		Nombre:           req.Nombre,
+		Descripcion:      req.Descripcion,
+		ImagenMiniatura:  req.ImagenMiniatura,
+		ImagenBanner:     req.ImagenBanner,
+		CantidadUsuarios: req.CantidadUsuarios,
+	}
+
+	_, err = c.CursoRepository.InsertOne(curso)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
