@@ -13,7 +13,7 @@ import (
 func ConnectToDataBase() (*mongo.Client, error) {
 
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	URI := "mongodb://localhost:27017" // "mongodb+srv://diegomartinezzr:MlUbLvrzfEYUDu6O@cluster.cl2lp.mongodb.net/?retryWrites=true&w=majority&appName=cluster"
+	URI := "mongodb+srv://diegomartinezzr:MlUbLvrzfEYUDu6O@cluster.cl2lp.mongodb.net/?retryWrites=true&w=majority&appName=cluster"
 	opts := options.Client().ApplyURI(URI).SetServerAPIOptions(serverAPI)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
