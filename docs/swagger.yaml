@@ -32,6 +32,14 @@ definitions:
       status:
         type: string
     type: object
+  response.ResponseUnidad:
+    properties:
+      code:
+        type: integer
+      data: {}
+      status:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -50,51 +58,10 @@ paths:
       summary: Devuelve todos los carritos de la base de datos
       tags:
       - curso
-  /curso/{curso_id}/comentarios:
-    get:
-      consumes:
-      - application/json
-      description: get comentarios
-      parameters:
-      - description: 671989c45e52cd33c7e3f6cd
-        in: path
-        name: curso_id
-        required: true
-        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.Response'
-      summary: Obtiene comentarios de un curso
-      tags:
-      - curso
-    post:
-      consumes:
-      - application/json
-      description: add comentarios
-      parameters:
-      - description: 671989c45e52cd33c7e3f6cd
-        in: path
-        name: curso_id
-        required: true
-        type: string
-      - description: 671989c45e52cd33c7e3f6cd
-        in: body
-        name: curso_id
-        required: true
-        schema:
-          $ref: '#/definitions/request.CreateComentarioRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-      summary: Agrega comentario a un curso
-      tags:
-      - curso
 swagger: "2.0"

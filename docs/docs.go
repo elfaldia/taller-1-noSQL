@@ -38,9 +38,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/curso/{curso_id}/comentarios": {
-            "get": {
-                "description": "get comentarios",
                 "consumes": [
                     "application/json"
                 ],
@@ -48,62 +45,10 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "curso"
-                ],
-                "summary": "Obtiene comentarios de un curso",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "671989c45e52cd33c7e3f6cd",
-                        "name": "curso_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "add comentarios",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "curso"
-                ],
-                "summary": "Agrega comentario a un curso",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "671989c45e52cd33c7e3f6cd",
-                        "name": "curso_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "671989c45e52cd33c7e3f6cd",
-                        "name": "curso_id",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/request.CreateComentarioRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
                         }
                     }
                 }
@@ -147,6 +92,18 @@ const docTemplate = `{
             }
         },
         "response.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.ResponseUnidad": {
             "type": "object",
             "properties": {
                 "code": {

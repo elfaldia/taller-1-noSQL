@@ -36,6 +36,14 @@ func (controller *UnidadController) FindAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+// @BasePath /unidad
+// @Summary Devuelve todos las unidades que pertenezcan a un respectivo Curso
+// @Description Encontrar una unidad con el id de un curso
+// @Tags unidad
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.ResponseUnidad
+// @Router /unidad/:id [get]
 func (controller *UnidadController) FindByIdCurso(ctx *gin.Context) {
 	id := ctx.Param("id")
 
