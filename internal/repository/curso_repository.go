@@ -21,7 +21,6 @@ type CursoRepository interface {
 
 type CursoRepositoryImpl struct {
 	CursoCollection *mongo.Collection
-	Ctx             *context.Context
 }
 
 func NewCursoRepositoryImpl(cursoCollection *mongo.Collection) CursoRepository {
@@ -87,7 +86,7 @@ func (c *CursoRepositoryImpl) InsertOne(curso model.Curso) (model.Curso, error) 
 
 	insertarCurso, err := c.CursoCollection.InsertOne(context.TODO(), curso)
 	if err != nil {
-		return curso, nil
+		return curso, err
 	}
 
 	curso.Id = insertarCurso.InsertedID.(primitive.ObjectID)
