@@ -176,3 +176,45 @@ func (controller *CursoController) GetComentariosByCursoId(ctx *gin.Context) {
 		"data":   comentarios,
 	})
 }
+
+// CAMBIAR A OTRO FILE DE CLASE_CONTROLLER.GO
+func (controller *CursoController) CreateClase(ctx *gin.Context) {
+	var clase model.Clase
+
+	if err := ctx.ShouldBindJSON(&clase); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := controller.CursoService.AddClase(clase)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"message": "Clase añadida con éxito",
+		"clase":   clase,
+	})
+}
+
+func (controller *CursoController) GetClaseById(ctx *gin.Context) {
+	claseID := ctx.Param("id")
+
+	objectIdClase, err := primitive.ObjectIDFromHex(claseID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid clase ID"})
+		return
+	}
+
+	clase, err := controller.CursoService.GetClaseById(objectIdClase)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Clase obtenida con éxito",
+		"clase":   clase,
+	})
+}

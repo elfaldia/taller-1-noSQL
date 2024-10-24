@@ -20,7 +20,9 @@ type CursoService interface {
 	FindAll() ([]response.CursoReponse, error)
 	FindById(string) (response.CursoReponse, error)
 	AddComentarioCurso(comentario model.ComentarioCurso) error
-	GetComentariosByCursoId(cursoID primitive.ObjectID) ([]model.ComentarioCurso, error) // Agregar este método
+	GetComentariosByCursoId(cursoID primitive.ObjectID) ([]model.ComentarioCurso, error)
+	AddClase(clase model.Clase) error
+	GetClaseById(claseID primitive.ObjectID) (model.Clase, error)
 }
 
 type CursoServiceImpl struct {
@@ -86,7 +88,6 @@ func (c *CursoServiceImpl) CreateManyCursos(req request.CreateManyCursoRequest) 
 }
 
 // InsertOne implements CursoService.
-// InsertOne implements CursoService.
 func (c *CursoServiceImpl) CreateCurso(req request.CreateCursoRequest) error {
 	// Validar el cuerpo de la solicitud
 	err := c.Validate.Struct(req)
@@ -142,4 +143,24 @@ func (s *CursoServiceImpl) GetComentariosByCursoId(cursoID primitive.ObjectID) (
 	}
 
 	return comentarios, nil
+}
+
+// LO MISMO QUE CONTROLLER, CREAR UNO PARA CLASE_SERVICE.GO
+func (s *CursoServiceImpl) AddClase(clase model.Clase) error {
+	collection := s.db.Collection("clases")
+	_, err := collection.InsertOne(context.TODO(), clase)
+	return err
+}
+
+func (s *CursoServiceImpl) GetClaseById(claseID primitive.ObjectID) (model.Clase, error) {
+	var clase model.Clase
+	collection := s.db.Collection("clases")
+
+	filter := bson.M{"_id": claseID}
+	err := collection.FindOne(context.TODO(), filter).Decode(&clase)
+	if err != nil {
+		return clase, err
+	}
+
+	return clase, nil
 }

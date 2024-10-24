@@ -43,6 +43,7 @@ func main() {
 	docs.SwaggerInfo.BasePath = ""
 	routes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	CursoRouter(routes, cursoController)
+	ClaseRouter(routes, cursoController)
 
 	server := &http.Server{
 		Addr:           ":8080",
