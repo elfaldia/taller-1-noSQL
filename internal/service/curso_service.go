@@ -21,10 +21,6 @@ type CursoService interface {
 	FindById(string) (response.CursoReponse, error)
 	AddComentarioCurso(comentario model.ComentarioCurso) error
 	GetComentariosByCursoId(cursoID primitive.ObjectID) ([]model.ComentarioCurso, error)
-	AddClase(clase model.Clase) error
-	GetClaseById(claseID primitive.ObjectID) (model.Clase, error)
-	AddComentarioClase(comentario model.ComentarioClase) error
-	GetComentariosByClaseId(claseID primitive.ObjectID) ([]model.ComentarioClase, error)
 }
 
 type CursoServiceImpl struct {
@@ -135,49 +131,6 @@ func (s *CursoServiceImpl) GetComentariosByCursoId(cursoID primitive.ObjectID) (
 
 	// Buscar los comentarios por el ID del curso
 	filter := bson.M{"id_curso": cursoID}
-	cursor, err := collection.Find(context.TODO(), filter)
-	if err != nil {
-		return nil, err
-	}
-
-	if err = cursor.All(context.TODO(), &comentarios); err != nil {
-		return nil, err
-	}
-
-	return comentarios, nil
-}
-
-// LO MISMO QUE CONTROLLER, CREAR UNO PARA CLASE_SERVICE.GO
-func (s *CursoServiceImpl) AddClase(clase model.Clase) error {
-	collection := s.db.Collection("clases")
-	_, err := collection.InsertOne(context.TODO(), clase)
-	return err
-}
-
-func (s *CursoServiceImpl) GetClaseById(claseID primitive.ObjectID) (model.Clase, error) {
-	var clase model.Clase
-	collection := s.db.Collection("clases")
-
-	filter := bson.M{"_id": claseID}
-	err := collection.FindOne(context.TODO(), filter).Decode(&clase)
-	if err != nil {
-		return clase, err
-	}
-
-	return clase, nil
-}
-
-func (s *CursoServiceImpl) AddComentarioClase(comentario model.ComentarioClase) error {
-	collection := s.db.Collection("comentarios_clase") // Asegúrate de que la colección exista
-	_, err := collection.InsertOne(context.TODO(), comentario)
-	return err
-}
-
-func (s *CursoServiceImpl) GetComentariosByClaseId(claseID primitive.ObjectID) ([]model.ComentarioClase, error) {
-	var comentarios []model.ComentarioClase
-	collection := s.db.Collection("comentarios_clase")
-
-	filter := bson.M{"id_clase": claseID}
 	cursor, err := collection.Find(context.TODO(), filter)
 	if err != nil {
 		return nil, err

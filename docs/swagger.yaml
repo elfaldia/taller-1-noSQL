@@ -1,4 +1,29 @@
 definitions:
+  request.CreateComentarioRequest:
+    properties:
+      detalle:
+        type: string
+      dislikes:
+        type: integer
+      fecha:
+        type: string
+      id_curso:
+        type: string
+      likes:
+        type: integer
+      nombre:
+        type: string
+      titulo:
+        type: string
+    required:
+    - detalle
+    - dislikes
+    - fecha
+    - id_curso
+    - likes
+    - nombre
+    - titulo
+    type: object
   response.Response:
     properties:
       code:
@@ -23,6 +48,53 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Devuelve todos los carritos de la base de datos
+      tags:
+      - curso
+  /curso/{curso_id}/comentarios:
+    get:
+      consumes:
+      - application/json
+      description: get comentarios
+      parameters:
+      - description: 671989c45e52cd33c7e3f6cd
+        in: path
+        name: curso_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Obtiene comentarios de un curso
+      tags:
+      - curso
+    post:
+      consumes:
+      - application/json
+      description: add comentarios
+      parameters:
+      - description: 671989c45e52cd33c7e3f6cd
+        in: path
+        name: curso_id
+        required: true
+        type: string
+      - description: 671989c45e52cd33c7e3f6cd
+        in: body
+        name: curso_id
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateComentarioRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Agrega comentario a un curso
       tags:
       - curso
 swagger: "2.0"
