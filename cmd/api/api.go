@@ -12,4 +12,5 @@ func CursoRouter(service *gin.Engine, cursoController *controller.CursoControlle
 	router.GET("/:id", cursoController.FindById)
 	router.POST("", cursoController.CreateCurso)
 	router.POST("ruta-para-insertar-muchos-cursos", cursoController.CreateManyCurso)
+	router.POST("/:curso_id/comentarios", cursoController.AddComentarioCurso)
 }

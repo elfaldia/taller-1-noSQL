@@ -3,10 +3,12 @@ package controller
 import (
 	"net/http"
 
+	"github.com/elfaldia/taller-noSQL/internal/model"
 	"github.com/elfaldia/taller-noSQL/internal/request"
 	"github.com/elfaldia/taller-noSQL/internal/response"
 	"github.com/elfaldia/taller-noSQL/internal/service"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type CursoController struct {
@@ -119,4 +121,34 @@ func (controller *CursoController) CreateManyCurso(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusCreated, res)
 
+}
+func (controller *CursoController) AddComentarioCurso(ctx *gin.Context) {
+	cursoID := ctx.Param("curso_id") // Extraer ID del curso desde la URL
+
+	var comentario model.ComentarioCurso
+	if err := ctx.ShouldBindJSON(&comentario); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Convertir el cursoID de string a ObjectID
+	objectIdCurso, err := primitive.ObjectIDFromHex(cursoID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid curso ID"})
+		return
+	}
+
+	comentario.IdCurso = objectIdCurso // Asociar comentario al curso
+
+	// Lógica para guardar el comentario en la base de datos
+	if err := controller.CursoService.AddComentarioCurso(comentario); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Respuesta exitosa
+	ctx.JSON(http.StatusCreated, gin.H{
+		"message":    "Comentario añadido con éxito",
+		"comentario": comentario,
+	})
 }

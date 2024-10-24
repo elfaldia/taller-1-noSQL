@@ -31,13 +31,14 @@ func main() {
 	validate := validator.New()
 	db := client.Database("taller-nosql")
 	cursoCollection := db.Collection("curso")
-
 	cursoRepository := repository.NewCursoRepositoryImpl(cursoCollection)
 
-	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, validate)
-
+	// Crear el servicio del curso, ahora pasamos `db` como parámetro adicional
+	cursoService, err := service.NewCursoServiceImpl(cursoRepository, validate, db)
+	if err != nil {
+		log.Fatalf("Error creando el servicio del curso: %v", err)
+	}
 	cursoController := controller.NewCursoController(cursoService)
-
 	routes := gin.Default()
 	docs.SwaggerInfo.BasePath = ""
 	routes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
@@ -54,5 +55,4 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 }

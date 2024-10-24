@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"errors"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
@@ -8,6 +9,7 @@ import (
 	"github.com/elfaldia/taller-noSQL/internal/request"
 	"github.com/elfaldia/taller-noSQL/internal/response"
 	"github.com/go-playground/validator"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type CursoService interface {
@@ -15,20 +17,23 @@ type CursoService interface {
 	CreateManyCursos(request.CreateManyCursoRequest) error
 	FindAll() ([]response.CursoReponse, error)
 	FindById(string) (response.CursoReponse, error)
+	AddComentarioCurso(comentario model.ComentarioCurso) error
 }
 
 type CursoServiceImpl struct {
 	CursoRepository repository.CursoRepository
 	Validate        *validator.Validate
+	db              *mongo.Database
 }
 
-func NewCursoServiceImpl(cursoRepository repository.CursoRepository, validate *validator.Validate) (service CursoService, err error) {
+func NewCursoServiceImpl(cursoRepository repository.CursoRepository, validate *validator.Validate, db *mongo.Database) (service CursoService, err error) {
 	if validate == nil {
 		return nil, errors.New("validator no puede ser nil")
 	}
 	return &CursoServiceImpl{
 		CursoRepository: cursoRepository,
 		Validate:        validate,
+		db:              db, // Asegúrate de pasar la base de datos aquí
 	}, nil
 }
 
@@ -78,21 +83,39 @@ func (c *CursoServiceImpl) CreateManyCursos(req request.CreateManyCursoRequest) 
 }
 
 // InsertOne implements CursoService.
+// InsertOne implements CursoService.
 func (c *CursoServiceImpl) CreateCurso(req request.CreateCursoRequest) error {
+	// Validar el cuerpo de la solicitud
 	err := c.Validate.Struct(req)
 	if err != nil {
 		return err
 	}
 
+	// Crear el objeto curso a partir del request
 	curso := model.Curso{
 		Nombre:           req.Nombre,
 		Descripcion:      req.Descripcion,
+		Valoracion:       req.Valoracion, // Asegúrate de incluir la valoración en la estructura
 		ImagenMiniatura:  req.ImagenMiniatura,
 		ImagenBanner:     req.ImagenBanner,
 		CantidadUsuarios: req.CantidadUsuarios,
 	}
 
+	// Insertar el curso en la base de datos
 	_, err = c.CursoRepository.InsertOne(curso)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *CursoServiceImpl) AddComentarioCurso(comentario model.ComentarioCurso) error {
+	// Acceder a la colección de comentarios
+	collection := s.db.Collection("comentarios_curso")
+
+	// Insertar el comentario en la colección
+	_, err := collection.InsertOne(context.TODO(), comentario)
 	if err != nil {
 		return err
 	}
