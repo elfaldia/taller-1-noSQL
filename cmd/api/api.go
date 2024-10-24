@@ -21,6 +21,8 @@ func CursoRouter(service *gin.Engine, cursoController *controller.CursoControlle
 func ClaseRouter(service *gin.Engine, cursoController *controller.CursoController) {
 	router := service.Group("/clase")
 
-	router.POST("", cursoController.CreateClase)
 	router.GET("/:id", cursoController.GetClaseById)
+	router.GET("/:id/comentarios", cursoController.GetComentariosByClaseId)
+	router.POST("", cursoController.CreateClase)
+	router.POST("/:id/comentarios", cursoController.AddComentarioClase)
 }

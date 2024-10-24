@@ -23,6 +23,8 @@ type CursoService interface {
 	GetComentariosByCursoId(cursoID primitive.ObjectID) ([]model.ComentarioCurso, error)
 	AddClase(clase model.Clase) error
 	GetClaseById(claseID primitive.ObjectID) (model.Clase, error)
+	AddComentarioClase(comentario model.ComentarioClase) error
+	GetComentariosByClaseId(claseID primitive.ObjectID) ([]model.ComentarioClase, error)
 }
 
 type CursoServiceImpl struct {
@@ -163,4 +165,27 @@ func (s *CursoServiceImpl) GetClaseById(claseID primitive.ObjectID) (model.Clase
 	}
 
 	return clase, nil
+}
+
+func (s *CursoServiceImpl) AddComentarioClase(comentario model.ComentarioClase) error {
+	collection := s.db.Collection("comentarios_clase") // Asegúrate de que la colección exista
+	_, err := collection.InsertOne(context.TODO(), comentario)
+	return err
+}
+
+func (s *CursoServiceImpl) GetComentariosByClaseId(claseID primitive.ObjectID) ([]model.ComentarioClase, error) {
+	var comentarios []model.ComentarioClase
+	collection := s.db.Collection("comentarios_clase")
+
+	filter := bson.M{"id_clase": claseID}
+	cursor, err := collection.Find(context.TODO(), filter)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = cursor.All(context.TODO(), &comentarios); err != nil {
+		return nil, err
+	}
+
+	return comentarios, nil
 }

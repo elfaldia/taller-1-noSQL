@@ -178,6 +178,13 @@ func (controller *CursoController) GetComentariosByCursoId(ctx *gin.Context) {
 }
 
 // CAMBIAR A OTRO FILE DE CLASE_CONTROLLER.GO
+// CAMBIAR A OTRO FILE DE CLASE_CONTROLLER.GO
+// CAMBIAR A OTRO FILE DE CLASE_CONTROLLER.GO
+// CAMBIAR A OTRO FILE DE CLASE_CONTROLLER.GO
+// CAMBIAR A OTRO FILE DE CLASE_CONTROLLER.GO
+// CAMBIAR A OTRO FILE DE CLASE_CONTROLLER.GO
+// CAMBIAR A OTRO FILE DE CLASE_CONTROLLER.GO
+
 func (controller *CursoController) CreateClase(ctx *gin.Context) {
 	var clase model.Clase
 
@@ -216,5 +223,58 @@ func (controller *CursoController) GetClaseById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Clase obtenida con éxito",
 		"clase":   clase,
+	})
+}
+
+func (controller *CursoController) AddComentarioClase(ctx *gin.Context) {
+	claseID := ctx.Param("id") // Extraer ID de la clase desde la URL
+
+	var comentario model.ComentarioClase
+	if err := ctx.ShouldBindJSON(&comentario); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Convertir el claseID de string a ObjectID
+	objectIdClase, err := primitive.ObjectIDFromHex(claseID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid clase ID"})
+		return
+	}
+
+	comentario.IdClase = objectIdClase // Asociar comentario a la clase
+
+	// Lógica para guardar el comentario en la base de datos
+	if err := controller.CursoService.AddComentarioClase(comentario); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Respuesta exitosa
+	ctx.JSON(http.StatusCreated, gin.H{
+		"message":    "Comentario añadido con éxito",
+		"comentario": comentario,
+	})
+}
+
+func (controller *CursoController) GetComentariosByClaseId(ctx *gin.Context) {
+	claseID := ctx.Param("id")
+
+	// Convertir el claseID de string a ObjectID
+	objectIdClase, err := primitive.ObjectIDFromHex(claseID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid clase ID"})
+		return
+	}
+
+	comentarios, err := controller.CursoService.GetComentariosByClaseId(objectIdClase)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"status": "success",
+		"data":   comentarios,
 	})
 }
