@@ -17,6 +17,16 @@ func NewClaseController(service service.ClaseService) *ClaseController {
 	return &ClaseController{ClaseService: service}
 }
 
+// @BasePath /unidad
+// @Summary get clases por unidad
+// @Description Devuelve todas las clases que tiene una unidad
+// @Tags clase
+// @Param id_unidad path string true "UNIDAD OBJECT ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.ErrorResponse
+// @Router /unidad/{id_unidad}/clase [get]
 func (controller *ClaseController) FindAllByIdUnidad(ctx *gin.Context) {
 
 	idUnidad := ctx.Param("id_unidad")
@@ -38,6 +48,16 @@ func (controller *ClaseController) FindAllByIdUnidad(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+// @BasePath /unidad
+// @Summary get clase por Object ID
+// @Description Devuelve una clase
+// @Tags clase
+// @Param id path string true "CLASE ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.ErrorResponse
+// @Router /unidad/{id_unidad}/clase [get]
 func (controller *ClaseController) FindById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	data, err := controller.ClaseService.FindById(id)
@@ -57,6 +77,16 @@ func (controller *ClaseController) FindById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+// @BasePath /unidad
+// @Summary Crea una clase
+// @Description Agrega una clase a la coleccion Clase
+// @Tags clase
+// @Param clase body request.CreateClaseRequest true "Carrito a crear"
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.ErrorResponse
+// @Router /unidad/{id_unidad}/clase [post]
 func (controller *ClaseController) CreateClase(ctx *gin.Context) {
 	var req request.CreateClaseRequest
 
