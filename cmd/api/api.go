@@ -9,9 +9,12 @@ func CursoRouter(service *gin.Engine, cursoController *controller.CursoControlle
 	router := service.Group("/curso")
 
 	router.GET("", cursoController.FindAll)
-	router.GET("/:id", cursoController.FindById)
+	// NECESITO QUE ALGUIEN VEA ESTA TONTERA JAJAJAJAJA (curso_id != id)
+	router.GET("/:curso_id", cursoController.FindById)
+	router.GET("/:curso_id/comentarios", cursoController.GetComentariosByCursoId)
 	router.POST("", cursoController.CreateCurso)
 	router.POST("ruta-para-insertar-muchos-cursos", cursoController.CreateManyCurso)
+	router.POST("/:curso_id/comentarios", cursoController.AddComentarioCurso)
 
 }
 

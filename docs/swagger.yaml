@@ -1,4 +1,29 @@
 definitions:
+  request.CreateComentarioRequest:
+    properties:
+      detalle:
+        type: string
+      dislikes:
+        type: integer
+      fecha:
+        type: string
+      id_curso:
+        type: string
+      likes:
+        type: integer
+      nombre:
+        type: string
+      titulo:
+        type: string
+    required:
+    - detalle
+    - dislikes
+    - fecha
+    - id_curso
+    - likes
+    - nombre
+    - titulo
+    type: object
   response.Response:
     properties:
       code:
@@ -33,19 +58,10 @@ paths:
       summary: Devuelve todos los carritos de la base de datos
       tags:
       - curso
-  /unidad/:id:
-    get:
-      consumes:
-      - application/json
-      description: Encontrar una unidad con el id de un curso
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.ResponseUnidad'
-      summary: Devuelve todos las unidades que pertenezcan a un respectivo Curso
-      tags:
-      - unidad
 swagger: "2.0"

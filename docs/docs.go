@@ -38,9 +38,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/unidad/:id": {
-            "get": {
-                "description": "Encontrar una unidad con el id de un curso",
                 "consumes": [
                     "application/json"
                 ],
@@ -48,14 +45,10 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "unidad"
-                ],
-                "summary": "Devuelve todos las unidades que pertenezcan a un respectivo Curso",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.ResponseUnidad"
                         }
                     }
                 }
@@ -63,6 +56,41 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "request.CreateComentarioRequest": {
+            "type": "object",
+            "required": [
+                "detalle",
+                "dislikes",
+                "fecha",
+                "id_curso",
+                "likes",
+                "nombre",
+                "titulo"
+            ],
+            "properties": {
+                "detalle": {
+                    "type": "string"
+                },
+                "dislikes": {
+                    "type": "integer"
+                },
+                "fecha": {
+                    "type": "string"
+                },
+                "id_curso": {
+                    "type": "string"
+                },
+                "likes": {
+                    "type": "integer"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "titulo": {
+                    "type": "string"
+                }
+            }
+        },
         "response.Response": {
             "type": "object",
             "properties": {

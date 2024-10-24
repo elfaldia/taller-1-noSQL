@@ -36,10 +36,14 @@ func main() {
 	cursoRepository := repository.NewCursoRepositoryImpl(cursoCollection)
 	unidadRepository := repository.NewUnidadRepositoryImpl(unidadCollection)
 
-	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, validate)
-	unidadService, _ := service.NewUnidadServiceImpl(unidadRepository, validate)
-
+	// Crear el servicio del curso, ahora pasamos `db` como parámetro adicional
+	cursoService, err := service.NewCursoServiceImpl(cursoRepository, validate, db)
+	if err != nil {
+		log.Fatalf("Error creando el servicio del curso: %v", err)
+	}
 	cursoController := controller.NewCursoController(cursoService)
+
+	unidadService, _ := service.NewUnidadServiceImpl(unidadRepository, validate)
 	unidadController := controller.NewUnidadController(unidadService)
 
 	routes := gin.Default()
@@ -59,5 +63,4 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 }
