@@ -31,17 +31,22 @@ func main() {
 	validate := validator.New()
 	db := client.Database("taller-nosql")
 	cursoCollection := db.Collection("curso")
+	unidadCollection := db.Collection("unidad")
 
 	cursoRepository := repository.NewCursoRepositoryImpl(cursoCollection)
+	unidadRepository := repository.NewUnidadRepositoryImpl(unidadCollection)
 
 	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, validate)
+	unidadService, _ := service.NewUnidadServiceImpl(unidadRepository, validate)
 
 	cursoController := controller.NewCursoController(cursoService)
+	unidadController := controller.NewUnidadController(unidadService)
 
 	routes := gin.Default()
 	docs.SwaggerInfo.BasePath = ""
 	routes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	CursoRouter(routes, cursoController)
+	UnidadRouter(routes, unidadController)
 
 	server := &http.Server{
 		Addr:           ":8080",
