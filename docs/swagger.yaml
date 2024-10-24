@@ -7,14 +7,6 @@ definitions:
       status:
         type: string
     type: object
-  response.ResponseUnidad:
-    properties:
-      code:
-        type: integer
-      data: {}
-      status:
-        type: string
-    type: object
 info:
   contact: {}
 paths:
@@ -33,19 +25,4 @@ paths:
       summary: Devuelve todos los carritos de la base de datos
       tags:
       - curso
-  /unidad/:id:
-    get:
-      consumes:
-      - application/json
-      description: Encontrar una unidad con el id de un curso
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.ResponseUnidad'
-      summary: Devuelve todos las unidades que pertenezcan a un respectivo Curso
-      tags:
-      - unidad
 swagger: "2.0"
