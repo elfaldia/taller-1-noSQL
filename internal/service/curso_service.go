@@ -9,6 +9,8 @@ import (
 	"github.com/elfaldia/taller-noSQL/internal/request"
 	"github.com/elfaldia/taller-noSQL/internal/response"
 	"github.com/go-playground/validator"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -18,6 +20,7 @@ type CursoService interface {
 	FindAll() ([]response.CursoReponse, error)
 	FindById(string) (response.CursoReponse, error)
 	AddComentarioCurso(comentario model.ComentarioCurso) error
+	GetComentariosByCursoId(cursoID primitive.ObjectID) ([]model.ComentarioCurso, error) // Agregar este método
 }
 
 type CursoServiceImpl struct {
@@ -121,4 +124,22 @@ func (s *CursoServiceImpl) AddComentarioCurso(comentario model.ComentarioCurso) 
 	}
 
 	return nil
+}
+
+func (s *CursoServiceImpl) GetComentariosByCursoId(cursoID primitive.ObjectID) ([]model.ComentarioCurso, error) {
+	var comentarios []model.ComentarioCurso
+	collection := s.db.Collection("comentarios_curso")
+
+	// Buscar los comentarios por el ID del curso
+	filter := bson.M{"id_curso": cursoID}
+	cursor, err := collection.Find(context.TODO(), filter)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = cursor.All(context.TODO(), &comentarios); err != nil {
+		return nil, err
+	}
+
+	return comentarios, nil
 }

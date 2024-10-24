@@ -152,3 +152,27 @@ func (controller *CursoController) AddComentarioCurso(ctx *gin.Context) {
 		"comentario": comentario,
 	})
 }
+
+func (controller *CursoController) GetComentariosByCursoId(ctx *gin.Context) {
+	cursoID := ctx.Param("curso_id") // Extraer el ID del curso desde la URL
+
+	// Convertir el cursoID de string a ObjectID
+	objectIdCurso, err := primitive.ObjectIDFromHex(cursoID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid curso ID"})
+		return
+	}
+
+	// Obtener los comentarios del curso desde el servicio
+	comentarios, err := controller.CursoService.GetComentariosByCursoId(objectIdCurso)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Respuesta exitosa
+	ctx.JSON(http.StatusOK, gin.H{
+		"status": "success",
+		"data":   comentarios,
+	})
+}
