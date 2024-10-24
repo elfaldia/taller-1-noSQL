@@ -38,6 +38,9 @@ const docTemplate = `{
                 }
             }
         },
+        "/curso/{curso_id}/comentarios": {
+            "get": {
+                "description": "get comentarios",
                 "consumes": [
                     "application/json"
                 ],
@@ -45,10 +48,161 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
+                    "curso"
+                ],
+                "summary": "Obtiene comentarios de un curso",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "671989c45e52cd33c7e3f6cd",
+                        "name": "curso_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "add comentarios",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "curso"
+                ],
+                "summary": "Agrega comentario a un curso",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "671989c45e52cd33c7e3f6cd",
+                        "name": "curso_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "671989c45e52cd33c7e3f6cd",
+                        "name": "curso_id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CreateComentarioRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/unidad/:id": {
+            "get": {
+                "description": "Encontrar una unidad con el id de un curso",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unidad"
+                ],
+                "summary": "Devuelve todos las unidades que pertenezcan a un respectivo Curso",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.ResponseUnidad"
+                        }
+                    }
+                }
+            }
+        },
+        "/unidad/{id_unidad}/clase": {
+            "get": {
+                "description": "Devuelve una clase",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clase"
+                ],
+                "summary": "get clase por Object ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "CLASE ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Agrega una clase a la coleccion Clase",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clase"
+                ],
+                "summary": "Crea una clase",
+                "parameters": [
+                    {
+                        "description": "Carrito a crear",
+                        "name": "clase",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CreateClaseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -56,6 +210,53 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "model.Material": {
+            "type": "object",
+            "properties": {
+                "nombre": {
+                    "type": "string"
+                },
+                "tipo": {
+                    "description": "Puede ser ENUM",
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.CreateClaseRequest": {
+            "type": "object",
+            "required": [
+                "id_unidad",
+                "indice_clase",
+                "nombre",
+                "video"
+            ],
+            "properties": {
+                "descripcion": {
+                    "type": "string"
+                },
+                "id_unidad": {
+                    "type": "string"
+                },
+                "indice_clase": {
+                    "type": "integer"
+                },
+                "material_adicional": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Material"
+                    }
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "video": {
+                    "type": "string"
+                }
+            }
+        },
         "request.CreateComentarioRequest": {
             "type": "object",
             "required": [
@@ -87,6 +288,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "titulo": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
                     "type": "string"
                 }
             }

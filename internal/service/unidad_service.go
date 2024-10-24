@@ -14,7 +14,7 @@ import (
 type UnidadService interface {
 	FindAll() ([]response.ObtenerUnidadResponde, error)
 	FindByIdCurso(string) ([]response.ObtenerUnidadResponde, error)
-	CreateOne(request.CrearUnidadRequest) (model.Unidad, error)
+	CreateOne(request.CrearUnidadRequest) (response.ObtenerUnidadResponde, error)
 	//CreateMany(request.CrearUnidadesRequest) ([]model.Unidad, error)
 }
 
@@ -72,15 +72,20 @@ func (u *UnidadServiceImpl) FindByIdCurso(id string) (unidad []response.ObtenerU
 	return unidadesRes, nil
 }
 
-func (u *UnidadServiceImpl) CreateOne(req request.CrearUnidadRequest) (model.Unidad, error) {
+func (u *UnidadServiceImpl) CreateOne(req request.CrearUnidadRequest) (response.ObtenerUnidadResponde, error) {
 	err := u.Validate.Struct(req)
 	if err != nil {
-		return model.Unidad{}, err
+		return response.ObtenerUnidadResponde{}, err
+	}
+
+	esUnico := u.isIndiceUniqueByUnidad(req.Indice, req.IdCurso)
+	if !esUnico {
+		return response.ObtenerUnidadResponde{}, errors.New("indice de clase no es único")
 	}
 
 	idCurso, err := primitive.ObjectIDFromHex(req.IdCurso)
 	if err != nil {
-		return model.Unidad{}, err
+		return response.ObtenerUnidadResponde{}, err
 	}
 
 	unidad := model.Unidad{
@@ -89,11 +94,32 @@ func (u *UnidadServiceImpl) CreateOne(req request.CrearUnidadRequest) (model.Uni
 		IdCurso: idCurso,
 	}
 
+	res := response.ObtenerUnidadResponde{
+		Id:      unidad.Id,
+		Nombre:  unidad.Nombre,
+		Indice:  unidad.Indice,
+		IdCurso: unidad.IdCurso,
+	}
+
 	_, err = u.UnidadRepository.InsertOne(unidad)
 	if err != nil {
-		return unidad, err
+		return res, err
 	}
-	return unidad, nil
+	return res, nil
+}
+
+func (u *UnidadServiceImpl) isIndiceUniqueByUnidad(indice int, idCurso string) bool {
+	unidades, err := u.FindByIdCurso(idCurso)
+	if err != nil {
+		return false
+	}
+
+	for _, value := range unidades {
+		if value.Indice == indice {
+			return false
+		}
+	}
+	return true
 }
 
 /*

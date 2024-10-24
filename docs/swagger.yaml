@@ -1,4 +1,36 @@
 definitions:
+  model.Material:
+    properties:
+      nombre:
+        type: string
+      tipo:
+        description: Puede ser ENUM
+        type: string
+      url:
+        type: string
+    type: object
+  request.CreateClaseRequest:
+    properties:
+      descripcion:
+        type: string
+      id_unidad:
+        type: string
+      indice_clase:
+        type: integer
+      material_adicional:
+        items:
+          $ref: '#/definitions/model.Material'
+        type: array
+      nombre:
+        type: string
+      video:
+        type: string
+    required:
+    - id_unidad
+    - indice_clase
+    - nombre
+    - video
+    type: object
   request.CreateComentarioRequest:
     properties:
       detalle:
@@ -23,6 +55,13 @@ definitions:
     - likes
     - nombre
     - titulo
+    type: object
+  response.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
     type: object
   response.Response:
     properties:
@@ -58,10 +97,116 @@ paths:
       summary: Devuelve todos los carritos de la base de datos
       tags:
       - curso
+  /curso/{curso_id}/comentarios:
+    get:
+      consumes:
+      - application/json
+      description: get comentarios
+      parameters:
+      - description: 671989c45e52cd33c7e3f6cd
+        in: path
+        name: curso_id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
+            $ref: '#/definitions/response.Response'
+      summary: Obtiene comentarios de un curso
+      tags:
+      - curso
+    post:
+      consumes:
+      - application/json
+      description: add comentarios
+      parameters:
+      - description: 671989c45e52cd33c7e3f6cd
+        in: path
+        name: curso_id
+        required: true
+        type: string
+      - description: 671989c45e52cd33c7e3f6cd
+        in: body
+        name: curso_id
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateComentarioRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Agrega comentario a un curso
+      tags:
+      - curso
+  /unidad/:id:
+    get:
+      consumes:
+      - application/json
+      description: Encontrar una unidad con el id de un curso
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ResponseUnidad'
+      summary: Devuelve todos las unidades que pertenezcan a un respectivo Curso
+      tags:
+      - unidad
+  /unidad/{id_unidad}/clase:
+    get:
+      consumes:
+      - application/json
+      description: Devuelve una clase
+      parameters:
+      - description: CLASE ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: get clase por Object ID
+      tags:
+      - clase
+    post:
+      consumes:
+      - application/json
+      description: Agrega una clase a la coleccion Clase
+      parameters:
+      - description: Carrito a crear
+        in: body
+        name: clase
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateClaseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Crea una clase
+      tags:
+      - clase
 swagger: "2.0"
