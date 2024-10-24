@@ -16,7 +16,7 @@ func CursoRouter(service *gin.Engine, cursoController *controller.CursoControlle
 }
 
 func UnidadRouter(service *gin.Engine, unidadController *controller.UnidadController) {
-	router := service.Group("/curso")
+	router := service.Group("/unidad")
 
 	router.GET("", unidadController.FindAll)
 	router.GET("/:id", unidadController.FindByIdCurso)
