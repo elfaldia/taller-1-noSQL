@@ -5,24 +5,40 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CursoRouter(service *gin.Engine, cursoController *controller.CursoController) {
+func CursoRouter(service *gin.Engine, cursoController *controller.CursoController, unidadController *controller.UnidadController) {
 	router := service.Group("/curso")
 
 	router.GET("", cursoController.FindAll)
-	// NECESITO QUE ALGUIEN VEA ESTA TONTERA JAJAJAJAJA (curso_id != id)
 	router.GET("/:curso_id", cursoController.FindById)
-	router.GET("/:curso_id/comentarios", cursoController.GetComentariosByCursoId)
 	router.POST("", cursoController.CreateCurso)
-	router.POST("ruta-para-insertar-muchos-cursos", cursoController.CreateManyCurso)
+
+	router.GET("/:curso_id/comentarios", cursoController.GetComentariosByCursoId)
 	router.POST("/:curso_id/comentarios", cursoController.AddComentarioCurso)
+
+	router.GET("/:curso_id/unidad", unidadController.FindByIdCurso)
+
+	router.POST("ruta-para-insertar-muchos-cursos", cursoController.CreateManyCurso)
 
 }
 
-func UnidadRouter(service *gin.Engine, unidadController *controller.UnidadController) {
+func UnidadRouter(service *gin.Engine, unidadController *controller.UnidadController, claseController *controller.ClaseController) {
 	router := service.Group("/unidad")
 
 	router.GET("", unidadController.FindAll)
-	router.GET("/:id", unidadController.FindByIdCurso)
 	router.POST("", unidadController.CreateOne)
 
+	router.GET("/:unidad_id/clase", claseController.FindAllByIdUnidad)
+
+}
+
+func ClaseRouter(service *gin.Engine, claseController *controller.ClaseController, comentarioClaseController *controller.ComentarioClaseController) {
+	router := service.Group("/clase")
+
+	router.GET("/:clase_id", claseController.FindById)
+	router.POST("", claseController.CreateClase)
+	router.POST("/post-many", claseController.CreateManyClase)
+
+	router.POST("/comentario", comentarioClaseController.CreateComentarioClase)
+	router.GET("/:clase_id/comentario", comentarioClaseController.FindAllByIdClase)
+	router.GET("/comentario/:comentario_id", comentarioClaseController.FindById)
 }

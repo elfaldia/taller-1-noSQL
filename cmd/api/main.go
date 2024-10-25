@@ -32,25 +32,33 @@ func main() {
 	db := client.Database("taller-nosql")
 	cursoCollection := db.Collection("curso")
 	unidadCollection := db.Collection("unidad")
+	claseCollection := db.Collection("clases")
+	comentarioClaseCollection := db.Collection("comentarios_clase")
 
 	cursoRepository := repository.NewCursoRepositoryImpl(cursoCollection)
 	unidadRepository := repository.NewUnidadRepositoryImpl(unidadCollection)
+	claseRepository := repository.NewClaseRepositoryImpl(claseCollection)
+	comentarioClaseRepository := repository.NewComentarioClaseRepositoryImpl(comentarioClaseCollection)
 
-	// Crear el servicio del curso, ahora pasamos `db` como parámetro adicional
-	cursoService, err := service.NewCursoServiceImpl(cursoRepository, validate, db)
-	if err != nil {
-		log.Fatalf("Error creando el servicio del curso: %v", err)
-	}
+	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, validate, db)
 	cursoController := controller.NewCursoController(cursoService)
 
 	unidadService, _ := service.NewUnidadServiceImpl(unidadRepository, validate)
 	unidadController := controller.NewUnidadController(unidadService)
 
+	claseService, _ := service.NewClaseServiceImpl(claseRepository, validate)
+	claseController := controller.NewClaseController(claseService)
+
+	comentarioClaseService, _ := service.NewComentarioClaseServiceImpl(comentarioClaseRepository, claseService, validate)
+	comentarioClaseController := controller.NewComentarioClaseController(comentarioClaseService)
+
 	routes := gin.Default()
 	docs.SwaggerInfo.BasePath = ""
 	routes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	CursoRouter(routes, cursoController)
-	UnidadRouter(routes, unidadController)
+
+	CursoRouter(routes, cursoController, unidadController)
+	UnidadRouter(routes, unidadController, claseController)
+	ClaseRouter(routes, claseController, comentarioClaseController)
 
 	server := &http.Server{
 		Addr:           ":8080",

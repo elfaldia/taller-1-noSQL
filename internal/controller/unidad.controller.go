@@ -43,9 +43,9 @@ func (controller *UnidadController) FindAll(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} response.ResponseUnidad
-// @Router /unidad/:id [get]
+// @Router /unidad/:curso_id [get]
 func (controller *UnidadController) FindByIdCurso(ctx *gin.Context) {
-	id := ctx.Param("id")
+	id := ctx.Param("curso_id")
 
 	data, err := controller.UnidadService.FindByIdCurso(id)
 	if err != nil {

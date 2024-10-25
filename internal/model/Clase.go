@@ -15,5 +15,5 @@ type Clase struct {
 type Material struct {
 	URL    string `json:"url" bson:"url"`
 	Nombre string `json:"nombre" bson:"nombre"`
-	Tipo   string `json:"tipo" bson:"tipo"` // Puede ser ENUM
+	Tipo   string `json:"tipo" bson:"tipo"` 
 }

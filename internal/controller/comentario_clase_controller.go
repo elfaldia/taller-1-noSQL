@@ -19,7 +19,7 @@ func NewComentarioClaseController(service service.ComentarioClaseService) *Comen
 
 func (controller *ComentarioClaseController) FindAllByIdClase(ctx *gin.Context) {
 
-	idClase := ctx.Param("id_clase")
+	idClase := ctx.Param("clase_id")
 
 	data, err := controller.ComentarioClaseService.FindAllByIdClase(idClase)
 
@@ -39,7 +39,7 @@ func (controller *ComentarioClaseController) FindAllByIdClase(ctx *gin.Context) 
 }
 
 func (controller *ComentarioClaseController) FindById(ctx *gin.Context) {
-	id := ctx.Param("id")
+	id := ctx.Param("comentario_id")
 	data, err := controller.ComentarioClaseService.FindById(id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, response.ErrorResponse{
@@ -56,7 +56,7 @@ func (controller *ComentarioClaseController) FindById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-func (controller *ComentarioClaseController) CreateClase(ctx *gin.Context) {
+func (controller *ComentarioClaseController) CreateComentarioClase(ctx *gin.Context) {
 	var req request.CreateComentarioClase
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {

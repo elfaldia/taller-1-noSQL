@@ -26,10 +26,10 @@ func NewClaseController(service service.ClaseService) *ClaseController {
 // @Produce json
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.ErrorResponse
-// @Router /unidad/{id_unidad}/clase [get]
+// @Router /unidad/{unidad_id}/clase [get]
 func (controller *ClaseController) FindAllByIdUnidad(ctx *gin.Context) {
 
-	idUnidad := ctx.Param("id_unidad")
+	idUnidad := ctx.Param("unidad_id")
 
 	data, err := controller.ClaseService.FindAllByIdUnidad(idUnidad)
 
@@ -57,9 +57,9 @@ func (controller *ClaseController) FindAllByIdUnidad(ctx *gin.Context) {
 // @Produce json
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.ErrorResponse
-// @Router /unidad/{id_unidad}/clase [get]
+// @Router /unidad/{id}/clase [get]
 func (controller *ClaseController) FindById(ctx *gin.Context) {
-	id := ctx.Param("id")
+	id := ctx.Param("clase_id")
 	data, err := controller.ClaseService.FindById(id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, response.ErrorResponse{
