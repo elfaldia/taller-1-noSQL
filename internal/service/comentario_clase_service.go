@@ -95,8 +95,8 @@ func (c *ComentarioClaseServiceImpl) CreateComentarioClase(req request.CreateCom
 		Fecha:    req.Fecha,
 		Titulo:   req.Titulo,
 		Detalle:  req.Detalle,
-		Likes:    0,
-		Dislikes: 0,
+		Likes:    req.Likes,
+		Dislikes: req.Dislikes,
 		IdClase:  idClase,
 	}
 	data, err := c.ComentarioClaseRepository.InsertOne(comentario)

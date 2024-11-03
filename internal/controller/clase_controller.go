@@ -25,11 +25,19 @@ func NewClaseController(service service.ClaseService) *ClaseController {
 // @Accept json
 // @Produce json
 // @Success 200 {object} response.Response
+// @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /unidad/{unidad_id}/clase [get]
+// @Router /unidad/{unidad_id}/clases [get]
 func (controller *ClaseController) FindAllByIdUnidad(ctx *gin.Context) {
 
 	idUnidad := ctx.Param("unidad_id")
+
+	if idUnidad == "" {
+		ctx.JSON(http.StatusBadRequest, response.ErrorResponse{
+			Code:    400,
+			Message: "unidad_id es obligatorio",
+		})
+	}
 
 	data, err := controller.ClaseService.FindAllByIdUnidad(idUnidad)
 
@@ -48,7 +56,7 @@ func (controller *ClaseController) FindAllByIdUnidad(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-// @BasePath /unidad
+// @BasePath /clase
 // @Summary get clase por Object ID
 // @Description Devuelve una clase
 // @Tags clase
@@ -57,9 +65,17 @@ func (controller *ClaseController) FindAllByIdUnidad(ctx *gin.Context) {
 // @Produce json
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.ErrorResponse
-// @Router /unidad/{id}/clase [get]
+// @Router /clase/{id} [get]
 func (controller *ClaseController) FindById(ctx *gin.Context) {
 	id := ctx.Param("clase_id")
+
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, response.ErrorResponse{
+			Code:    400,
+			Message: "clase_id es obligatorio",
+		})
+	}
+
 	data, err := controller.ClaseService.FindById(id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, response.ErrorResponse{
@@ -77,16 +93,7 @@ func (controller *ClaseController) FindById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-// @BasePath /unidad
-// @Summary Crea una clase
-// @Description Agrega una clase a la coleccion Clase
-// @Tags clase
-// @Param clase body request.CreateClaseRequest true "Carrito a crear"
-// @Accept json
-// @Produce json
-// @Success 200 {object} response.Response
-// @Failure 500 {object} response.ErrorResponse
-// @Router /unidad/{id_unidad}/clase [post]
+
 func (controller *ClaseController) CreateClase(ctx *gin.Context) {
 	var req request.CreateClaseRequest
 
@@ -114,6 +121,7 @@ func (controller *ClaseController) CreateClase(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusCreated, res)
 }
+
 
 func (controller *ClaseController) CreateManyClase(ctx *gin.Context) {
 

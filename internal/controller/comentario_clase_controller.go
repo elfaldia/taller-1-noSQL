@@ -17,6 +17,16 @@ func NewComentarioClaseController(service service.ComentarioClaseService) *Comen
 	return &ComentarioClaseController{ComentarioClaseService: service}
 }
 
+
+// @BasePath /clase
+// @Summary Devuelve todos los comentarios de una clase
+// @Description todos los comentarios de una clase 
+// @Tags clase
+// @Param clase_id path int true
+// @Produce json
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.ErrorResponse
+// @Router /clase/{clase_id} [get]
 func (controller *ComentarioClaseController) FindAllByIdClase(ctx *gin.Context) {
 
 	idClase := ctx.Param("clase_id")
@@ -38,6 +48,17 @@ func (controller *ComentarioClaseController) FindAllByIdClase(ctx *gin.Context) 
 	ctx.JSON(http.StatusOK, res)
 }
 
+
+// @BasePath /clase
+// @Summary Devuelve una comentario clase
+// @Description comentario clase
+// @Tags clase
+// @Param clase_id path int true
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.ErrorResponse
+// @Router /curso/{clase_id} [get]
 func (controller *ComentarioClaseController) FindById(ctx *gin.Context) {
 	id := ctx.Param("comentario_id")
 	data, err := controller.ComentarioClaseService.FindById(id)
@@ -56,6 +77,17 @@ func (controller *ComentarioClaseController) FindById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+// @BasePath /clase
+// @Summary Crea un comentario
+// @Description crea un comentario para una clase
+// @Tags clase
+// @Param  cometario body request.CreateComentarioClase true "json del comentario"
+// @Accept json
+// @Produce json
+// @Success 201 {object} response.Response
+// @Failure 404 {object} response.ErrorResponse
+// @Failure 500 {object} response.ErrorResponse
+// @Router /clase/comentarios [post]
 func (controller *ComentarioClaseController) CreateComentarioClase(ctx *gin.Context) {
 	var req request.CreateComentarioClase
 

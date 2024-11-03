@@ -17,6 +17,15 @@ func NewUnidadController(service service.UnidadService) *UnidadController {
 	return &UnidadController{UnidadService: service}
 }
 
+
+// @BasePath /unidad
+// @Summary Devuelve todos las unidades de la base de datos
+// @Description get unidades
+// @Tags unidad
+// @Produce json
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.ErrorResponse
+// @Router /unidad [get]
 func (controller *UnidadController) FindAll(ctx *gin.Context) {
 	data, err := controller.UnidadService.FindAll()
 	if err != nil {
@@ -43,7 +52,8 @@ func (controller *UnidadController) FindAll(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} response.ResponseUnidad
-// @Router /unidad/:curso_id [get]
+// @Failure 500 {object} response.ErrorResponse
+// @Router /unidad/{curso_id} [get]
 func (controller *UnidadController) FindByIdCurso(ctx *gin.Context) {
 	id := ctx.Param("curso_id")
 

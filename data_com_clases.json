@@ -1,0 +1,155 @@
+[
+  {
+    "nombre": "Carlos Pérez",
+    "fecha": "2024-01-15",
+    "titulo": "Gran introducción",
+    "detalle": "La clase presenta los conceptos de manera clara y comprensible.",
+    "id_clase": "67279f53a3557f2a03e5b2c1",
+    "likes": 25,
+    "dislikes": 2
+  },
+  {
+    "nombre": "Ana López",
+    "fecha": "2024-01-18",
+    "titulo": "Muy completa",
+    "detalle": "Excelente contenido, ayuda a entender los fundamentos de manera sencilla.",
+    "id_clase": "67279f53a3557f2a03e5b2c1",
+    "likes": 30,
+    "dislikes": 1
+  },
+  {
+    "nombre": "José García",
+    "fecha": "2024-02-05",
+    "titulo": "Bien explicado",
+    "detalle": "La explicación es muy clara, aunque el tema es complejo.",
+    "id_clase": "67279f54a3557f2a03e5b2c2",
+    "likes": 15,
+    "dislikes": 3
+  },
+  {
+    "nombre": "María Sánchez",
+    "fecha": "2024-03-10",
+    "titulo": "Muy claro",
+    "detalle": "La explicación es precisa y fácil de entender.",
+    "id_clase": "67279f54a3557f2a03e5b2c4",
+    "likes": 20,
+    "dislikes": 0
+  },
+  {
+    "nombre": "Luis Martín",
+    "fecha": "2024-03-20",
+    "titulo": "Inspirador",
+    "detalle": "La clase motiva a explorar más sobre el tema.",
+    "id_clase": "67279f54a3557f2a03e5b2c7",
+    "likes": 28,
+    "dislikes": 1
+  },
+  {
+    "nombre": "Elena Ruiz",
+    "fecha": "2024-03-25",
+    "titulo": "Muy detallada",
+    "detalle": "Excelente explicación de los conceptos.",
+    "id_clase": "67279f54a3557f2a03e5b2c7",
+    "likes": 22,
+    "dislikes": 2
+  },
+  {
+    "nombre": "Fernando Ríos",
+    "fecha": "2024-04-02",
+    "titulo": "Un tema fascinante",
+    "detalle": "Esta clase hace accesibles temas complejos.",
+    "id_clase": "67279f54a3557f2a03e5b2c8",
+    "likes": 26,
+    "dislikes": 3
+  },
+  {
+    "nombre": "María Jiménez",
+    "fecha": "2024-04-10",
+    "titulo": "Gran análisis",
+    "detalle": "Contenido muy detallado y bien estructurado.",
+    "id_clase": "67279f55a3557f2a03e5b2ca",
+    "likes": 31,
+    "dislikes": 1
+  },
+  {
+    "nombre": "Juan Martínez",
+    "fecha": "2024-04-20",
+    "titulo": "Muy informativo",
+    "detalle": "Excelente contenido, bien explicado y fácil de seguir.",
+    "id_clase": "67279f55a3557f2a03e5b2cf",
+    "likes": 18,
+    "dislikes": 0
+  },
+  {
+    "nombre": "Sofía Morales",
+    "fecha": "2024-04-22",
+    "titulo": "Recomendado",
+    "detalle": "Contenido completo, bien explicado y fácil de entender.",
+    "id_clase": "67279f56a3557f2a03e5b2d0",
+    "likes": 25,
+    "dislikes": 2
+  },
+  {
+    "nombre": "David Ramírez",
+    "fecha": "2024-05-05",
+    "titulo": "Interesante",
+    "detalle": "Buena introducción al tema.",
+    "id_clase": "67279f56a3557f2a03e5b2d3",
+    "likes": 17,
+    "dislikes": 1
+  },
+  {
+    "nombre": "Raquel Torres",
+    "fecha": "2024-05-07",
+    "titulo": "Explicación clara",
+    "detalle": "Los temas están bien cubiertos y explicados.",
+    "id_clase": "67279f56a3557f2a03e5b2d5",
+    "likes": 19,
+    "dislikes": 0
+  },
+  {
+    "nombre": "Pablo Gutiérrez",
+    "fecha": "2024-05-10",
+    "titulo": "Muy interesante",
+    "detalle": "Buena introducción a los conceptos clave.",
+    "id_clase": "67279f57a3557f2a03e5b2d7",
+    "likes": 16,
+    "dislikes": 2
+  },
+  {
+    "nombre": "Carmen Rodríguez",
+    "fecha": "2024-05-12",
+    "titulo": "Valioso",
+    "detalle": "Contenido bien explicado y detallado.",
+    "id_clase": "67279f57a3557f2a03e5b2d8",
+    "likes": 21,
+    "dislikes": 1
+  },
+  {
+    "nombre": "Francisco Blanco",
+    "fecha": "2024-06-01",
+    "titulo": "Informativo",
+    "detalle": "Aprendí mucho y se explica de manera sencilla.",
+    "id_clase": "67279f57a3557f2a03e5b2db",
+    "likes": 14,
+    "dislikes": 3
+  },
+  {
+    "nombre": "Isabel Núñez",
+    "fecha": "2024-06-05",
+    "titulo": "Muy práctico",
+    "detalle": "Me gustó el enfoque práctico del contenido.",
+    "id_clase": "67279f57a3557f2a03e5b2dc",
+    "likes": 22,
+    "dislikes": 0
+  },
+  {
+    "nombre": "Pedro Herrera",
+    "fecha": "2024-06-10",
+    "titulo": "Ideal para principiantes",
+    "detalle": "Buen contenido, ideal para aquellos que recién comienzan.",
+    "id_clase": "67279f58a3557f2a03e5b2de",
+    "likes": 19,
+    "dislikes": 1
+  }
+]

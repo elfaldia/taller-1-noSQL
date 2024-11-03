@@ -4,7 +4,6 @@ definitions:
       nombre:
         type: string
       tipo:
-        description: Puede ser ENUM
         type: string
       url:
         type: string
@@ -144,7 +143,7 @@ paths:
       summary: Agrega comentario a un curso
       tags:
       - curso
-  /unidad/:id:
+  /unidad/:curso_id:
     get:
       consumes:
       - application/json
@@ -160,6 +159,32 @@ paths:
       tags:
       - unidad
   /unidad/{id_unidad}/clase:
+    post:
+      consumes:
+      - application/json
+      description: Agrega una clase a la coleccion Clase
+      parameters:
+      - description: Carrito a crear
+        in: body
+        name: clase
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateClaseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Crea una clase
+      tags:
+      - clase
+  /unidad/{id}/clase:
     get:
       consumes:
       - application/json
@@ -184,17 +209,17 @@ paths:
       summary: get clase por Object ID
       tags:
       - clase
-    post:
+  /unidad/{unidad_id}/clase:
+    get:
       consumes:
       - application/json
-      description: Agrega una clase a la coleccion Clase
+      description: Devuelve todas las clases que tiene una unidad
       parameters:
-      - description: Carrito a crear
-        in: body
-        name: clase
+      - description: UNIDAD OBJECT ID
+        in: path
+        name: id_unidad
         required: true
-        schema:
-          $ref: '#/definitions/request.CreateClaseRequest'
+        type: string
       produces:
       - application/json
       responses:
@@ -206,7 +231,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/response.ErrorResponse'
-      summary: Crea una clase
+      summary: get clases por unidad
       tags:
       - clase
 swagger: "2.0"

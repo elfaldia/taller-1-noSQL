@@ -1,0 +1,227 @@
+[
+  {
+    "nombre": "Ana García",
+    "fecha": "2024-01-10",
+    "titulo": "Muy útil y bien explicado",
+    "detalle": "Me ha ayudado a entender cosas que antes no comprendía bien. Explicaciones claras y precisas.",
+    "likes": 23,
+    "dislikes": 3,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Carlos Rodríguez",
+    "fecha": "2024-02-15",
+    "titulo": "Ideal para complementar estudios",
+    "detalle": "El contenido es exactamente lo que estaba buscando para mejorar mis conocimientos.",
+    "likes": 15,
+    "dislikes": 2,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Lucía Pérez",
+    "fecha": "2024-03-05",
+    "titulo": "Calidad en el contenido",
+    "detalle": "Material de alta calidad, aunque algunos temas podrían estar más detallados.",
+    "likes": 19,
+    "dislikes": 5,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Martín López",
+    "fecha": "2024-03-20",
+    "titulo": "Algo técnico en algunas partes",
+    "detalle": "Algunas secciones son difíciles de seguir sin conocimientos previos.",
+    "likes": 8,
+    "dislikes": 10,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Elena Ruiz",
+    "fecha": "2024-04-12",
+    "titulo": "Ideal para profundizar",
+    "detalle": "Es un recurso excelente para quienes buscan ampliar su conocimiento.",
+    "likes": 25,
+    "dislikes": 1,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Pedro Jiménez",
+    "fecha": "2024-01-05",
+    "titulo": "Introducción muy completa",
+    "detalle": "Permite entender conceptos clave y es una excelente introducción al tema.",
+    "likes": 17,
+    "dislikes": 0,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Carla Díaz",
+    "fecha": "2024-02-10",
+    "titulo": "Interesante pero un poco extenso",
+    "detalle": "Buen contenido, aunque algunas secciones se sienten un poco largas.",
+    "likes": 13,
+    "dislikes": 4,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Juan Fernández",
+    "fecha": "2024-02-22",
+    "titulo": "Muy completo",
+    "detalle": "Cubre una gran variedad de temas y está bien explicado.",
+    "likes": 20,
+    "dislikes": 2,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Sofía Gómez",
+    "fecha": "2024-03-03",
+    "titulo": "Excelente curso",
+    "detalle": "El profesor demuestra un gran conocimiento del tema, aprendí muchísimo.",
+    "likes": 30,
+    "dislikes": 1,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Luis Álvarez",
+    "fecha": "2024-03-18",
+    "titulo": "Muy inspirador",
+    "detalle": "Este curso me animó a investigar más y a profundizar en el tema.",
+    "likes": 27,
+    "dislikes": 0,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Marta Sánchez",
+    "fecha": "2024-01-15",
+    "titulo": "Muy detallado",
+    "detalle": "El curso abarca muchos temas de manera detallada y organizada.",
+    "likes": 22,
+    "dislikes": 3,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Roberto Torres",
+    "fecha": "2024-02-25",
+    "titulo": "Perfecto para repasar",
+    "detalle": "Es muy completo, ideal como material de repaso.",
+    "likes": 18,
+    "dislikes": 1,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Julia Castro",
+    "fecha": "2024-03-10",
+    "titulo": "Bien estructurado",
+    "detalle": "La organización de los temas es excelente, me ha ayudado a entender mejor.",
+    "likes": 15,
+    "dislikes": 0,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Pablo Vega",
+    "fecha": "2024-03-22",
+    "titulo": "Algo extenso",
+    "detalle": "La información es útil, pero algunas secciones son un poco largas.",
+    "likes": 8,
+    "dislikes": 7,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Inés Morales",
+    "fecha": "2024-04-01",
+    "titulo": "Recomendado",
+    "detalle": "Curso perfecto para quienes quieren tener una visión más completa del tema.",
+    "likes": 26,
+    "dislikes": 0,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Raquel Ramírez",
+    "fecha": "2024-01-03",
+    "titulo": "Explicaciones claras",
+    "detalle": "Las explicaciones son fáciles de entender y ayudan mucho a aclarar conceptos.",
+    "likes": 19,
+    "dislikes": 2,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Fernando Herrera",
+    "fecha": "2024-02-17",
+    "titulo": "Gran introducción",
+    "detalle": "Ideal para quienes buscan una introducción en el tema.",
+    "likes": 21,
+    "dislikes": 1,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Carolina Martín",
+    "fecha": "2024-03-02",
+    "titulo": "Muy recomendable",
+    "detalle": "Es accesible para cualquier persona interesada en aprender sobre el tema.",
+    "likes": 23,
+    "dislikes": 0,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Daniel Moreno",
+    "fecha": "2024-03-16",
+    "titulo": "Información muy útil",
+    "detalle": "La información es muy completa y aborda muchos aspectos importantes.",
+    "likes": 17,
+    "dislikes": 3,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Sonia Lozano",
+    "fecha": "2024-04-05",
+    "titulo": "Curso muy completo",
+    "detalle": "He aprendido mucho y siento que mi conocimiento ha mejorado considerablemente.",
+    "likes": 29,
+    "dislikes": 1,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Hugo Navarro",
+    "fecha": "2024-01-20",
+    "titulo": "Buena introducción",
+    "detalle": "Es perfecto para entender los conceptos básicos del tema.",
+    "likes": 25,
+    "dislikes": 2,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Miriam Ruiz",
+    "fecha": "2024-02-18",
+    "titulo": "Muy práctico",
+    "detalle": "Las lecciones son prácticas y se entienden bien. Ideal para principiantes.",
+    "likes": 20,
+    "dislikes": 0,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Andrés Ramos",
+    "fecha": "2024-03-08",
+    "titulo": "Buen contenido",
+    "detalle": "La información es completa y aborda tanto temas básicos como avanzados.",
+    "likes": 18,
+    "dislikes": 1,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Isabel Prieto",
+    "fecha": "2024-03-21",
+    "titulo": "Muy claro",
+    "detalle": "Las explicaciones son claras y el curso es fácil de seguir.",
+    "likes": 22,
+    "dislikes": 1,
+    "id_curso": ""
+  },
+  {
+    "nombre": "Diego Ortiz",
+    "fecha": "2024-04-15",
+    "titulo": "Un poco básico",
+    "detalle": "Ideal para quienes empiezan, pero puede ser muy básico para avanzados.",
+    "likes": 12,
+    "dislikes": 5,
+    "id_curso": ""
+  }
+]

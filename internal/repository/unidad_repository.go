@@ -14,6 +14,7 @@ type UnidadRepository interface {
 	FindByIdCurso(unidadId string) ([]model.Unidad, error)
 	InsertOne(unidad model.Unidad) (model.Unidad, error)
 	InsertMany(unidades []model.Unidad) ([]model.Unidad, error)
+	DeleteUnidad(string) error
 }
 
 type UnidadRepositoryImpl struct {
@@ -98,4 +99,21 @@ func (u *UnidadRepositoryImpl) InsertMany(unidades []model.Unidad) ([]model.Unid
 		unidadesInsertados = append(unidadesInsertados, unidades[i])
 	}
 	return unidadesInsertados, nil
+}
+
+// DeleteCurso implements CursoRepository.
+func (c *UnidadRepositoryImpl) DeleteUnidad(idUnidadS string) error {
+
+	idUnidad, err := primitive.ObjectIDFromHex(idUnidadS)
+	if err != nil {
+		return err
+	}
+
+	filter := bson.D{{Key: "_id", Value: idUnidad}}
+
+	_, err = c.Collection.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -15,6 +15,7 @@ type UnidadService interface {
 	FindAll() ([]response.ObtenerUnidadResponde, error)
 	FindByIdCurso(string) ([]response.ObtenerUnidadResponde, error)
 	CreateOne(request.CrearUnidadRequest) (response.ObtenerUnidadResponde, error)
+	DeleteUnidad(string)
 	//CreateMany(request.CrearUnidadesRequest) ([]model.Unidad, error)
 }
 
@@ -101,10 +102,11 @@ func (u *UnidadServiceImpl) CreateOne(req request.CrearUnidadRequest) (response.
 		IdCurso: unidad.IdCurso,
 	}
 
-	_, err = u.UnidadRepository.InsertOne(unidad)
+	unidad, err = u.UnidadRepository.InsertOne(unidad)
 	if err != nil {
 		return res, err
 	}
+	res.Id = unidad.Id
 	return res, nil
 }
 
@@ -120,6 +122,10 @@ func (u *UnidadServiceImpl) isIndiceUniqueByUnidad(indice int, idCurso string) b
 		}
 	}
 	return true
+}
+
+func (c *UnidadServiceImpl) DeleteUnidad(unidadId string) {
+	c.UnidadRepository.DeleteUnidad(unidadId)
 }
 
 /*

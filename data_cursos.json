@@ -1,0 +1,322 @@
+[
+    {
+        "nombre": "Curso de Física Avanzada",
+        "descripcion": "Exploración de conceptos avanzados en física.",
+        "imagen_miniatura": "fisica_avanzada_mini.png",
+        "imagen_banner": "fisica_avanzada_banner.png",
+        "valoracion": 4.5,
+        "cantidad_usuarios": 150,
+        "unidades": [
+            {
+                "nombre_unidad": "Mecánica Cuántica",
+                "indice_unidad": 1,
+                "clases": [
+                    {
+                        "nombre_clase": "Introducción a la Mecánica Cuántica",
+                        "indice_clase": 1,
+                        "video": "video_mecanica.url",
+                        "descripcion": "Conceptos básicos de la mecánica cuántica.",
+                        "material_adicional": [
+                            {
+                                "url": "notas_mecanica.pdf",
+                                "nombre": "Notas de Mecánica Cuántica",
+                                "tipo": "pdf"
+                            }
+                        ]
+                    },
+                    {
+                        "nombre_clase": "Funciones de Onda",
+                        "indice_clase": 2,
+                        "video": "video_onda.url",
+                        "descripcion": "Estudio de las funciones de onda.",
+                        "material_adicional": [
+                            {
+                                "url": "ejercicios_onda.pdf",
+                                "nombre": "Ejercicios de Funciones de Onda",
+                                "tipo": "pdf"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "nombre_unidad": "Termodinámica",
+                "indice_unidad": 2,
+                "clases": [
+                    {
+                        "nombre_clase": "Leyes de la Termodinámica",
+                        "indice_clase": 1,
+                        "video": "video_termodinamica.url",
+                        "descripcion": "Revisión de las leyes fundamentales.",
+                        "material_adicional": [
+                            {
+                                "url": "grafico_leyes.png",
+                                "nombre": "Gráfico de Leyes",
+                                "tipo": "png"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    
+    {
+        "nombre": "Curso de Literatura Clásica",
+        "descripcion": "Estudio de los clásicos de la literatura mundial.",
+        "imagen_miniatura": "literatura_clasica_mini.png",
+        "imagen_banner": "literatura_clasica_banner.png",
+        "valoracion": 4.5,
+        "cantidad_usuarios": 120,
+        "unidades": [
+            {
+                "nombre_unidad": "Literatura Griega",
+                "indice_unidad": 1,
+                "clases": [
+                    {
+                        "nombre_clase": "Épica Griega",
+                        "indice_clase": 1,
+                        "video": "video_epica.url",
+                        "descripcion": "Introducción a la épica de Homero.",
+                        "material_adicional": [
+                            {
+                                "url": "poema_homero.pdf",
+                                "nombre": "Fragmentos de la Ilíada",
+                                "tipo": "pdf"
+                            }
+                        ]
+                    },
+                    {
+                        "nombre_clase": "Tragedia Griega",
+                        "indice_clase": 2,
+                        "video": "video_tragedia.url",
+                        "descripcion": "Estudio de las tragedias griegas.",
+                        "material_adicional": [
+                            {
+                                "url": "tragedia_sophocles.pdf",
+                                "nombre": "Obras de Sófocles",
+                                "tipo": "pdf"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "nombre_unidad": "Literatura Romana",
+                "indice_unidad": 2,
+                "clases": [
+                    {
+                        "nombre_clase": "La Eneida de Virgilio",
+                        "indice_clase": 1,
+                        "video": "video_eneida.url",
+                        "descripcion": "Exploración de la Eneida y su contexto.",
+                        "material_adicional": [
+                            {
+                                "url": "eneida_texto.pdf",
+                                "nombre": "Texto de la Eneida",
+                                "tipo": "pdf"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    
+    {
+        "nombre": "Curso de Historia del Arte",
+        "descripcion": "Exploración de las principales corrientes del arte a lo largo de la historia.",
+        "imagen_miniatura": "arte_historia_mini.png",
+        "imagen_banner": "arte_historia_banner.png",
+        "valoracion": 1.0,
+        "cantidad_usuarios": 0,
+        "unidades": [
+            {
+                "nombre_unidad": "Arte Prehistórico",
+                "indice_unidad": 1,
+                "clases": [
+                    {
+                        "nombre_clase": "Introducción al Arte Rupestre",
+                        "indice_clase": 1,
+                        "video": "video_rupestre.url",
+                        "descripcion": "Estudio de las pinturas rupestres y su significado.",
+                        "material_adicional": [
+                            {
+                                "url": "imagenes_cuevas.jpg",
+                                "nombre": "Imágenes de Cuevas Prehistóricas",
+                                "tipo": "jpg"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "nombre_unidad": "Renacimiento",
+                "indice_unidad": 2,
+                "clases": [
+                    {
+                        "nombre_clase": "Principales Artistas del Renacimiento",
+                        "indice_clase": 1,
+                        "video": "video_renacimiento.url",
+                        "descripcion": "Estudio de los principales exponentes.",
+                        "material_adicional": [
+                            {
+                                "url": "obras_renacimiento.pdf",
+                                "nombre": "Obras del Renacimiento",
+                                "tipo": "pdf"
+                            }
+                        ]
+                    },
+                    {
+                        "nombre_clase": "Características del Arte Renacentista",
+                        "indice_clase": 2,
+                        "video": "video_caracteristicas.url",
+                        "descripcion": "Características distintivas de esta época.",
+                        "material_adicional": [
+                            {
+                                "url": "analisis_renacentista.png",
+                                "nombre": "Análisis de Obras",
+                                "tipo": "png"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "nombre": "Curso de Psicología",
+        "descripcion": "Introducción a los conceptos básicos de la psicología.",
+        "imagen_miniatura": "psicologia_mini.png",
+        "imagen_banner": "psicologia_banner.png",
+        "valoracion": 3.8,
+        "cantidad_usuarios": 50,
+        "unidades": [
+            {
+                "nombre_unidad": "Psicología Cognitiva",
+                "indice_unidad": 1,
+                "clases": [
+                    {
+                        "nombre_clase": "Percepción y Cognición",
+                        "indice_clase": 1,
+                        "video": "video_cognicion.url",
+                        "descripcion": "Cómo el cerebro procesa información.",
+                        "material_adicional": [
+                            {
+                                "url": "esquema_cognicion.pdf",
+                                "nombre": "Esquema de Percepción",
+                                "tipo": "pdf"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "nombre_unidad": "Psicología del Desarrollo",
+                "indice_unidad": 2,
+                "clases": [
+                    {
+                        "nombre_clase": "Etapas de Desarrollo",
+                        "indice_clase": 1,
+                        "video": "video_desarrollo.url",
+                        "descripcion": "Desarrollo psicológico desde la infancia.",
+                        "material_adicional": [
+                            {
+                                "url": "tabla_desarrollo.jpg",
+                                "nombre": "Tabla de Etapas de Desarrollo",
+                                "tipo": "jpg"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "nombre_unidad": "Psicología Social",
+                "indice_unidad": 3,
+                "clases": [
+                    {
+                        "nombre_clase": "Dinámica de Grupos",
+                        "indice_clase": 1,
+                        "video": "video_grupos.url",
+                        "descripcion": "Análisis de cómo funcionan los grupos.",
+                        "material_adicional": [
+                            {
+                                "url": "infografia_grupos.png",
+                                "nombre": "Infografía de Dinámicas",
+                                "tipo": "png"
+                            }
+                        ]
+                    },
+                    {
+                        "nombre_clase": "Comportamiento Social",
+                        "indice_clase": 2,
+                        "video": "video_comportamiento.url",
+                        "descripcion": "Estudio del comportamiento en sociedad."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "nombre": "Curso de Robótica",
+        "descripcion": "Principios básicos de la robótica y su aplicación.",
+        "imagen_miniatura": "robotica_mini.png",
+        "imagen_banner": "robotica_banner.png",
+        "valoracion": 2.2,
+        "cantidad_usuarios": 15,
+        "unidades": [
+            {
+                "nombre_unidad": "Componentes de un Robot",
+                "indice_unidad": 1,
+                "clases": [
+                    {
+                        "nombre_clase": "Introducción a los Componentes",
+                        "indice_clase": 1,
+                        "video": "video_componentes.url",
+                        "descripcion": "Descripción de los componentes de un robot.",
+                        "material_adicional": [
+                            {
+                                "url": "lista_componentes.pdf",
+                                "nombre": "Lista de Componentes",
+                                "tipo": "pdf"
+                            }
+                        ]
+                    },
+                    {
+                        "nombre_clase": "Sensores y Actuadores",
+                        "indice_clase": 2,
+                        "video": "video_sensores.url",
+                        "descripcion": "Uso de sensores y actuadores en robótica.",
+                        "material_adicional": [
+                            {
+                                "url": "sensores_guia.pdf",
+                                "nombre": "Guía de Sensores",
+                                "tipo": "pdf"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "nombre_unidad": "Programación de Robots",
+                "indice_unidad": 2,
+                "clases": [
+                    {
+                        "nombre_clase": "Lenguajes de Programación para Robots",
+                        "indice_clase": 1,
+                        "video": "video_lenguajes.url",
+                        "descripcion": "Principales lenguajes usados en robótica.",
+                        "material_adicional": [
+                            {
+                                "url": "ejercicios_robotica.py",
+                                "nombre": "Ejercicios de Programación",
+                                "tipo": "py"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

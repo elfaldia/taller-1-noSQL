@@ -109,7 +109,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/unidad/:id": {
+        "/unidad/:curso_id": {
             "get": {
                 "description": "Encontrar una unidad con el id de un curso",
                 "consumes": [
@@ -133,42 +133,6 @@ const docTemplate = `{
             }
         },
         "/unidad/{id_unidad}/clase": {
-            "get": {
-                "description": "Devuelve una clase",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "clase"
-                ],
-                "summary": "get clase por Object ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "CLASE ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "Agrega una clase a la coleccion Clase",
                 "consumes": [
@@ -207,6 +171,82 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/unidad/{id}/clase": {
+            "get": {
+                "description": "Devuelve una clase",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clase"
+                ],
+                "summary": "get clase por Object ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "CLASE ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/unidad/{unidad_id}/clase": {
+            "get": {
+                "description": "Devuelve todas las clases que tiene una unidad",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clase"
+                ],
+                "summary": "get clases por unidad",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UNIDAD OBJECT ID",
+                        "name": "id_unidad",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -217,7 +257,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "tipo": {
-                    "description": "Puede ser ENUM",
                     "type": "string"
                 },
                 "url": {

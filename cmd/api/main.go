@@ -40,9 +40,6 @@ func main() {
 	claseRepository := repository.NewClaseRepositoryImpl(claseCollection)
 	comentarioClaseRepository := repository.NewComentarioClaseRepositoryImpl(comentarioClaseCollection)
 
-	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, validate, db)
-	cursoController := controller.NewCursoController(cursoService)
-
 	unidadService, _ := service.NewUnidadServiceImpl(unidadRepository, validate)
 	unidadController := controller.NewUnidadController(unidadService)
 
@@ -52,8 +49,13 @@ func main() {
 	comentarioClaseService, _ := service.NewComentarioClaseServiceImpl(comentarioClaseRepository, claseService, validate)
 	comentarioClaseController := controller.NewComentarioClaseController(comentarioClaseService)
 
+	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, validate, db, unidadService, claseService)
+	cursoController := controller.NewCursoController(cursoService, comentarioClaseService, claseService)
+
 	routes := gin.Default()
 	docs.SwaggerInfo.BasePath = ""
+
+	routes.GET("ruta-para-rellenar-base", cursoController.RellenarBase)
 	routes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	CursoRouter(routes, cursoController, unidadController)
@@ -63,8 +65,8 @@ func main() {
 	server := &http.Server{
 		Addr:           ":8080",
 		Handler:        routes,
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
+		ReadTimeout:    60 * time.Second,
+		WriteTimeout:   60 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 	err = server.ListenAndServe()

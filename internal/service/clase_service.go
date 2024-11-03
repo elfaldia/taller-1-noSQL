@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"math/rand"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
 	"github.com/elfaldia/taller-noSQL/internal/repository"
@@ -12,10 +13,13 @@ import (
 )
 
 type ClaseService interface {
+	FindAll() ([]response.ClaseReponse, error)
 	FindAllByIdUnidad(string) ([]response.ClaseReponse, error)
 	FindById(string) (response.ClaseReponse, error)
 	CreateClase(request.CreateClaseRequest) (response.ClaseReponse, error)
 	CreateManyClase([]request.CreateClaseRequest) error
+	DeleteClase(string)
+	GetRandomId() (primitive.ObjectID, error)
 }
 
 type ClaseServiceImpl struct {
@@ -31,6 +35,27 @@ func NewClaseServiceImpl(claseRepository repository.ClaseRepository, validate *v
 		ClaseRepository: claseRepository,
 		Validate:        validate,
 	}, nil
+}
+
+func (c *ClaseServiceImpl) FindAll() (clases []response.ClaseReponse, err error) {
+	results, err := c.ClaseRepository.FindAll()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, value := range results {
+		clase := response.ClaseReponse{
+			Id:                value.Id,
+			Nombre:            value.Nombre,
+			Descripcion:       value.Descripcion,
+			Indice:            value.Indice,
+			Video:             value.Video,
+			MaterialAdicional: value.MaterialAdicional,
+			IdUnidad:          value.IdUnidad,
+		}
+		clases = append(clases, clase)
+	}
+	return clases, nil
 }
 
 // FindAllByIdUnidad implements ClaseService.
@@ -87,7 +112,7 @@ func (c *ClaseServiceImpl) CreateManyClase(requests []request.CreateClaseRequest
 	var clases []model.Clase
 
 	for _, req := range requests {
-		esUnico := c.isIndiceUniqueByUnidad(req.Indice, req.IdUnidad)
+		esUnico := c.IsIndiceUniqueByUnidad(req.Indice, req.IdUnidad)
 		if !esUnico {
 			return errors.New("indice de clase no es único")
 		}
@@ -123,7 +148,7 @@ func (c *ClaseServiceImpl) CreateClase(req request.CreateClaseRequest) (response
 
 	// validar que idUnidad existe
 
-	esUnico := c.isIndiceUniqueByUnidad(req.Indice, req.IdUnidad)
+	esUnico := c.IsIndiceUniqueByUnidad(req.Indice, req.IdUnidad)
 	if !esUnico {
 		return response.ClaseReponse{}, errors.New("indice de clase no es único")
 	}
@@ -159,7 +184,7 @@ func (c *ClaseServiceImpl) CreateClase(req request.CreateClaseRequest) (response
 
 }
 
-func (c *ClaseServiceImpl) isIndiceUniqueByUnidad(indice int, idUnidad string) bool {
+func (c *ClaseServiceImpl) IsIndiceUniqueByUnidad(indice int, idUnidad string) bool {
 	clases, err := c.FindAllByIdUnidad(idUnidad)
 	if err != nil {
 		return false
@@ -171,4 +196,22 @@ func (c *ClaseServiceImpl) isIndiceUniqueByUnidad(indice int, idUnidad string) b
 		}
 	}
 	return true
+}
+
+func (c *ClaseServiceImpl) DeleteClase(claseId string) {
+	c.ClaseRepository.DeleteClase(claseId)
+}
+
+func (c *ClaseServiceImpl) GetRandomId() (primitive.ObjectID, error) {
+
+	clases, err := c.FindAll()
+	if err != nil {
+		return primitive.NilObjectID, err
+	}
+	var ids []primitive.ObjectID
+	for _, curso := range clases {
+		ids = append(ids, curso.Id)
+	}
+	randomIndex := rand.Intn(len(ids))
+	return ids[randomIndex], nil
 }

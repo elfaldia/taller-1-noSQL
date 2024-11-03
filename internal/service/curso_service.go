@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"math/rand"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
 	"github.com/elfaldia/taller-noSQL/internal/repository"
@@ -15,26 +16,37 @@ import (
 )
 
 type CursoService interface {
-	CreateCurso(request.CreateCursoRequest) error
-	CreateManyCursos(request.CreateManyCursoRequest) error
+	CreateCurso(*request.CreateCursoRequest) (idCurso string, err error)
 	FindAll() ([]response.CursoReponse, error)
 	FindById(string) (response.CursoReponse, error)
 	AddComentarioCurso(comentario model.ComentarioCurso) error
 	GetComentariosByCursoId(cursoID primitive.ObjectID) ([]model.ComentarioCurso, error)
+	DeleteCurso(string)
+	GetRandomId() (primitive.ObjectID, error)
 }
 
 type CursoServiceImpl struct {
 	CursoRepository repository.CursoRepository
+	UnidadService   UnidadService
+	ClaseService    ClaseService
 	Validate        *validator.Validate
 	db              *mongo.Database
 }
 
-func NewCursoServiceImpl(cursoRepository repository.CursoRepository, validate *validator.Validate, db *mongo.Database) (service CursoService, err error) {
+func NewCursoServiceImpl(
+	cursoRepository repository.CursoRepository,
+	validate *validator.Validate,
+	db *mongo.Database,
+	unidadService UnidadService,
+	claseService ClaseService,
+) (service CursoService, err error) {
 	if validate == nil {
 		return nil, errors.New("validator no puede ser nil")
 	}
 	return &CursoServiceImpl{
 		CursoRepository: cursoRepository,
+		UnidadService:   unidadService,
+		ClaseService:    claseService,
 		Validate:        validate,
 		db:              db, // Asegúrate de pasar la base de datos aquí
 	}, nil
@@ -80,43 +92,65 @@ func (c *CursoServiceImpl) FindById(_id string) (curso response.CursoReponse, er
 	return res, nil
 }
 
-// InsertMany implements CursoService.
-func (c *CursoServiceImpl) CreateManyCursos(req request.CreateManyCursoRequest) error {
-	panic("unimplemented")
-}
-
 // InsertOne implements CursoService.
-func (c *CursoServiceImpl) CreateCurso(req request.CreateCursoRequest) error {
-	// Validar el cuerpo de la solicitud
-	err := c.Validate.Struct(req)
+func (c *CursoServiceImpl) CreateCurso(req *request.CreateCursoRequest) (idCurso string, err error) {
+
+	err = c.Validate.Struct(req)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	// Crear el objeto curso a partir del request
 	curso := model.Curso{
 		Nombre:           req.Nombre,
 		Descripcion:      req.Descripcion,
-		Valoracion:       req.Valoracion, // Asegúrate de incluir la valoración en la estructura
+		Valoracion:       req.Valoracion,
 		ImagenMiniatura:  req.ImagenMiniatura,
 		ImagenBanner:     req.ImagenBanner,
-		CantidadUsuarios: req.CantidadUsuarios,
+		CantidadUsuarios: req.CantidadUsuario,
 	}
 
-	// Insertar el curso en la base de datos
-	_, err = c.CursoRepository.InsertOne(curso)
+	curso, err = c.CursoRepository.InsertOne(curso)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	for _, unidadReq := range req.Unidades {
+
+		createUnidadReq := request.CrearUnidadRequest{
+			Nombre:  unidadReq.NombreUnidad,
+			Indice:  unidadReq.IndiceUnidad,
+			IdCurso: curso.Id.Hex(),
+		}
+
+		unidad, err := c.UnidadService.CreateOne(createUnidadReq)
+		if err != nil {
+			c.DeleteCurso(curso.Id.Hex())
+			return "", err
+		}
+		for _, claseReq := range unidadReq.Clases {
+
+			createClaseReq := request.CreateClaseRequest{
+				Nombre:            claseReq.NombreClase,
+				Descripcion:       claseReq.Descripcion,
+				Video:             claseReq.Video,
+				Indice:            claseReq.IndiceClase,
+				MaterialAdicional: claseReq.MaterialAdicional,
+				IdUnidad:          unidad.Id.Hex(),
+			}
+			_, err := c.ClaseService.CreateClase(createClaseReq)
+			if err != nil {
+				c.DeleteCurso(curso.Id.Hex())
+				return "", err
+			}
+		}
+	}
+	return curso.Id.Hex(), nil
 }
 
 func (s *CursoServiceImpl) AddComentarioCurso(comentario model.ComentarioCurso) error {
-	// Acceder a la colección de comentarios
+
 	collection := s.db.Collection("comentarios_curso")
 
-	// Insertar el comentario en la colección
 	_, err := collection.InsertOne(context.TODO(), comentario)
 	if err != nil {
 		return err
@@ -129,7 +163,6 @@ func (s *CursoServiceImpl) GetComentariosByCursoId(cursoID primitive.ObjectID) (
 	var comentarios []model.ComentarioCurso
 	collection := s.db.Collection("comentarios_curso")
 
-	// Buscar los comentarios por el ID del curso
 	filter := bson.M{"id_curso": cursoID}
 	cursor, err := collection.Find(context.TODO(), filter)
 	if err != nil {
@@ -141,4 +174,32 @@ func (s *CursoServiceImpl) GetComentariosByCursoId(cursoID primitive.ObjectID) (
 	}
 
 	return comentarios, nil
+}
+
+func (c *CursoServiceImpl) DeleteCurso(cursoId string) {
+
+	c.CursoRepository.DeleteCurso(cursoId)
+	unidades, _ := c.UnidadService.FindByIdCurso(cursoId)
+	for _, unidad := range unidades {
+		clases, _ := c.ClaseService.FindAllByIdUnidad(unidad.Id.Hex())
+		for _, clase := range clases {
+			c.ClaseService.DeleteClase(clase.Id.Hex())
+		}
+		c.UnidadService.DeleteUnidad(unidad.Id.Hex())
+	}
+
+}
+
+func (c *CursoServiceImpl) GetRandomId() (primitive.ObjectID, error) {
+
+	cursos, err := c.FindAll()
+	if err != nil {
+		return primitive.NilObjectID, err
+	}
+	var ids []primitive.ObjectID
+	for _, curso := range cursos {
+		ids = append(ids, curso.Id)
+	}
+	randomIndex := rand.Intn(len(ids))
+	return ids[randomIndex], nil
 }

@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"log"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
 	"go.mongodb.org/mongo-driver/bson"
@@ -15,8 +14,7 @@ type CursoRepository interface {
 	FindById(cursoId string) (model.Curso, error)
 	InsertOne(curso model.Curso) (model.Curso, error)
 	InsertMany(cursos []model.Curso) ([]model.Curso, error)
-
-	// seguir ...
+	DeleteCurso(string) error
 }
 
 type CursoRepositoryImpl struct {
@@ -39,7 +37,6 @@ func (c *CursoRepositoryImpl) FindAll() ([]model.Curso, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("imagen: %s", results[0].ImagenBanner)
 	return results, nil
 }
 
@@ -93,4 +90,21 @@ func (c *CursoRepositoryImpl) InsertOne(curso model.Curso) (model.Curso, error) 
 
 	return curso, nil
 
+}
+
+// DeleteCurso implements CursoRepository.
+func (c *CursoRepositoryImpl) DeleteCurso(idCursoString string) error {
+
+	idCurso, err := primitive.ObjectIDFromHex(idCursoString)
+	if err != nil {
+		return err
+	}
+
+	filter := bson.D{{Key: "_id", Value: idCurso}}
+
+	_, err = c.CursoCollection.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return err
+	}
+	return nil
 }
