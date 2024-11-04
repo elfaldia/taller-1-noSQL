@@ -7,6 +7,14 @@
 [https://go.dev/doc/install](https://go.dev/doc/install)
 
 
+## Se Utilizo MONGOATLAS PARA LA BASE DE datos:
+
+Se necesita enviar un email al siguiente correo para poder acceder al cluster de atlas (permiso de ip):
+
+## correo: cristian.nettle@alumnos.ucn.cl
+
+Con esta solicitud se le enviara una solicitud al correo en el que envio la solicitud y tendra que acceder a mongoatlas y permitir el ip, para que asi tenga acceso al cluster de mongo atlas
+
 ### 2. Instalar Dependencias
 
 Para documentar el proyecto, instala **swag** utilizando el siguiente comando:
