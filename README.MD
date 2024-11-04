@@ -15,6 +15,8 @@ Se necesita enviar un email al siguiente correo para poder acceder al cluster de
 
 Con esta solicitud se le enviara una solicitud al correo en el que envio la solicitud y tendra que acceder a mongoatlas y permitir el ip, para que asi tenga acceso al cluster de mongo atlas
 
+(ya se le envio un correo al profesor Bastian Ruiz, pero no sabemos quien evaluara)
+
 ### 2. Instalar Dependencias
 
 Para documentar el proyecto, instala **swag** utilizando el siguiente comando:
