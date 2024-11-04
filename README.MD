@@ -1,17 +1,33 @@
-## Pasos para iniciar el proyecto
-### Installar Go:
-#### `https://go.dev/doc/install`
+# Guía para Iniciar el Proyecto
 
-## Necesitas instalar estas dependencias:
-### Para documentar el proyecto:
-#### `go install github.com/swaggo/swag/cmd/swag@latest`
+## Requisitos Previos
 
-## comando para recopilar los comentarios:
-#### `swag init -g ./cmd/api/main.go -o docs`
+### 1. Instalar Go
 
+[https://go.dev/doc/install](https://go.dev/doc/install)
 
-## Para iniciar el proyecto utilizar en el directorio del proyecto este comando:
-#### `go run cmd/api/main.go cmd/api/api.go`
+### 2. Instalar Dependencias
 
-## Endpoint para ver la documentacion:
-#### `http://localhost:8080/swagger/index.html`
+Para documentar el proyecto, instala **swag** utilizando el siguiente comando:
+
+### `go install github.com/swaggo/swag/cmd/swag@latest`
+
+## Configuración del Proyecto
+
+### 1. Generar Documentación
+
+En la raíz principal del proyecto, ejecutar el siguiente comando para recopilar los comentarios y generar la documentación:
+
+## `swag init -g ./cmd/api/main.go -o docs`
+
+### 2. Iniciar el Proyecto
+
+Para iniciar el proyecto, ejecuta el siguiente comando dentro del directorio del proyecto:
+
+### `go run cmd/api/main.go cmd/api/api.go`
+
+## Acceder a la Documentación
+
+Una vez iniciado el proyecto, puedes acceder a la documentación a través del siguiente enlace:
+
+[http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
