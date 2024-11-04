@@ -21,7 +21,7 @@ func NewClaseController(service service.ClaseService) *ClaseController {
 // @Summary get clases por unidad
 // @Description Devuelve todas las clases que tiene una unidad
 // @Tags unidad
-// @Param id_unidad path string true "UNIDAD OBJECT ID"
+// @Param unidad_id path string true "UNIDAD OBJECT ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} response.Response

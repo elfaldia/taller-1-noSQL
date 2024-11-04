@@ -51,12 +51,12 @@ func (controller *ComentarioClaseController) FindAllByIdClase(ctx *gin.Context) 
 // @Summary Devuelve una comentario clase
 // @Description comentario clase
 // @Tags clase
-// @Param clase_id path int true  "clase ID"
+// @Param comentario_id path int true  "ID comentario"
 // @Accept json
 // @Produce json
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.ErrorResponse
-// @Router /clase/{clase_id} [get]
+// @Router /clase/{comentario_id} [get]
 func (controller *ComentarioClaseController) FindById(ctx *gin.Context) {
 	id := ctx.Param("comentario_id")
 	data, err := controller.ComentarioClaseService.FindById(id)

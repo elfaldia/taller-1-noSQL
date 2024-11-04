@@ -63,6 +63,41 @@ const docTemplate = `{
         },
         "/clase/{clase_id}": {
             "get": {
+                "description": "todos los comentarios de una clase",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clase"
+                ],
+                "summary": "Devuelve todos los comentarios de una clase",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "clase ID",
+                        "name": "clase_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/clase/{comentario_id}": {
+            "get": {
                 "description": "comentario clase",
                 "consumes": [
                     "application/json"
@@ -77,8 +112,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "clase ID",
-                        "name": "clase_id",
+                        "description": "ID comentario",
+                        "name": "comentario_id",
                         "in": "path",
                         "required": true
                     }
@@ -432,7 +467,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "UNIDAD OBJECT ID",
-                        "name": "id_unidad",
+                        "name": "unidad_id",
                         "in": "path",
                         "required": true
                     }

@@ -122,13 +122,36 @@ info:
 paths:
   /clase/{clase_id}:
     get:
-      consumes:
-      - application/json
-      description: comentario clase
+      description: todos los comentarios de una clase
       parameters:
       - description: clase ID
         in: path
         name: clase_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Devuelve todos los comentarios de una clase
+      tags:
+      - clase
+  /clase/{comentario_id}:
+    get:
+      consumes:
+      - application/json
+      description: comentario clase
+      parameters:
+      - description: ID comentario
+        in: path
+        name: comentario_id
         required: true
         type: integer
       produces:
@@ -391,7 +414,7 @@ paths:
       parameters:
       - description: UNIDAD OBJECT ID
         in: path
-        name: id_unidad
+        name: unidad_id
         required: true
         type: string
       produces:
