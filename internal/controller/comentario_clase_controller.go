@@ -17,12 +17,11 @@ func NewComentarioClaseController(service service.ComentarioClaseService) *Comen
 	return &ComentarioClaseController{ComentarioClaseService: service}
 }
 
-
 // @BasePath /clase
 // @Summary Devuelve todos los comentarios de una clase
-// @Description todos los comentarios de una clase 
+// @Description todos los comentarios de una clase
 // @Tags clase
-// @Param clase_id path int true
+// @Param clase_id path int true "clase ID"
 // @Produce json
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.ErrorResponse
@@ -48,17 +47,16 @@ func (controller *ComentarioClaseController) FindAllByIdClase(ctx *gin.Context) 
 	ctx.JSON(http.StatusOK, res)
 }
 
-
 // @BasePath /clase
 // @Summary Devuelve una comentario clase
 // @Description comentario clase
 // @Tags clase
-// @Param clase_id path int true
+// @Param clase_id path int true  "clase ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.ErrorResponse
-// @Router /curso/{clase_id} [get]
+// @Router /clase/{clase_id} [get]
 func (controller *ComentarioClaseController) FindById(ctx *gin.Context) {
 	id := ctx.Param("comentario_id")
 	data, err := controller.ComentarioClaseService.FindById(id)

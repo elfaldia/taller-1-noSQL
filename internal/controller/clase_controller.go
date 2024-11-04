@@ -20,7 +20,7 @@ func NewClaseController(service service.ClaseService) *ClaseController {
 // @BasePath /unidad
 // @Summary get clases por unidad
 // @Description Devuelve todas las clases que tiene una unidad
-// @Tags clase
+// @Tags unidad
 // @Param id_unidad path string true "UNIDAD OBJECT ID"
 // @Accept json
 // @Produce json
@@ -93,7 +93,6 @@ func (controller *ClaseController) FindById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-
 func (controller *ClaseController) CreateClase(ctx *gin.Context) {
 	var req request.CreateClaseRequest
 
@@ -121,7 +120,6 @@ func (controller *ClaseController) CreateClase(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusCreated, res)
 }
-
 
 func (controller *ClaseController) CreateManyClase(ctx *gin.Context) {
 

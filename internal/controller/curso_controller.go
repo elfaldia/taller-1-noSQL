@@ -63,7 +63,7 @@ func (controller *CursoController) FindAll(ctx *gin.Context) {
 // @Summary Devuelve un curso
 // @Description get curso a partir del ID
 // @Tags curso
-// @Param curso_id path int true
+// @Param curso_id path int true "curso id"
 // @Accept json
 // @Produce json
 // @Success 200 {object} response.Response
@@ -204,11 +204,10 @@ func (controller *CursoController) GetComentariosByCursoId(ctx *gin.Context) {
 	})
 }
 
-
 // @BasePath
 // @Summary Crea cursos con todos sus componentes (rellena la base)
 // @Description crear cursos
-// @Tags curso
+// @Tags BaseDatos
 // @Produce json
 // @Success 200 {object} response.Response
 // @Failure 500 {object} response.ErrorResponse
