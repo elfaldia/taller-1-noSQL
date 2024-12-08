@@ -12,6 +12,8 @@ import (
 
 func ConnectDynamoDB() *dynamodb.Client {
 
+	log.Printf("la variable es: %s", env.GetString("aws_access_key_id", "eg"))
+
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithRegion(env.GetString("region", "sa-east-1")),
 		config.WithCredentialsProvider(
@@ -24,6 +26,7 @@ func ConnectDynamoDB() *dynamodb.Client {
 
 	log.Print("You successfully connected to DynamoDB!")
 	client := dynamodb.NewFromConfig(cfg)
+
 
 	return client
 }
