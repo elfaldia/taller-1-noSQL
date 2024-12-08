@@ -12,9 +12,6 @@ import (
 
 func ConnectDynamoDB() *dynamodb.Client {
 
-
-
-
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithRegion(env.GetString("region", "sa-east-1")),
 		config.WithCredentialsProvider(
