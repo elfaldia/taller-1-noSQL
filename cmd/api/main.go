@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/elfaldia/taller-noSQL/docs"
@@ -13,14 +15,27 @@ import (
 	"github.com/elfaldia/taller-noSQL/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
+	"github.com/joho/godotenv"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
 
+	err1 := godotenv.Load(".envrc")
+	if err1 != nil {
+		log.Fatalf("Error cargando archivo .envrc: %v", err1)
+	}
+
+	fmt.Printf("aws_access_key_id: %s\n", os.Getenv("aws_access_key_id"))
+	fmt.Printf("aws_secret_access_key: %s\n", os.Getenv("aws_secret_access_key"))
+	fmt.Printf("region: %s\n", os.Getenv("region"))
+
 	clientDB := db.ConnectDynamoDB()
 	log.Println("Cliente DynamoDB inicializado:", clientDB)
+
+	userRepository := repository.NewUserRepositoryImpl(clientDB)
+	_ = service.NewUserServiceImpl(userRepository)
 
 	client, err := db.ConnectToDataBase()
 	if err != nil {
