@@ -18,6 +18,10 @@ import (
 )
 
 func main() {
+
+	clientDB := db.ConnectDynamoDB()
+	log.Println("Cliente DynamoDB inicializado:", clientDB)
+
 	client, err := db.ConnectToDataBase()
 	if err != nil {
 		log.Fatalf("Error conectando a MongoDB: %v", err)
