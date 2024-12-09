@@ -21,12 +21,14 @@ type XUserCourseService interface {
 type XUserCourseServiceImpl struct {
 	XUserCourseRepository repository.CursoUsuarioRepository
 	UserService           UserService
+	CursoService          CursoService
 }
 
-func NewXUserCourseServiceImpl(xUserCourseRepository repository.CursoUsuarioRepository, userService UserService) XUserCourseService {
+func NewXUserCourseServiceImpl(xUserCourseRepository repository.CursoUsuarioRepository, userService UserService, cursoService CursoService) XUserCourseService {
 	return &XUserCourseServiceImpl{
 		XUserCourseRepository: xUserCourseRepository,
 		UserService:           userService,
+		CursoService:          cursoService,
 	}
 }
 
@@ -92,7 +94,6 @@ func (u *XUserCourseServiceImpl) AgregarCurso(request *request.AgregarCurso) err
 	if err != nil {
 		return fmt.Errorf("failed to insert user course: %w", err)
 	}
-
 	return nil
 }
 
@@ -102,12 +103,23 @@ func (u *XUserCourseServiceImpl) UpdateCurso(request *request.UpdateCurso) error
 		return fmt.Errorf("clases vistas no puede ser menor que 0")
 	}
 
+	cantidadTotal, err := u.CursoService.GetCantidadClases(request.CourseName)
+	if err != nil {
+		return err
+	}
+
+	if cantidadTotal < request.ClasesVistas {
+		return fmt.Errorf("clases vistas no puede ser mayor que el total de clases del curso")
+	}
+
 	userCourse := model.UserCourse{
+		UserId:       request.UserId,
+		CourseName:   request.CourseName,
 		State:        request.State,
 		ClasesVistas: request.ClasesVistas,
 	}
 
-	_, err := u.XUserCourseRepository.UpdateOne(userCourse)
+	_, err = u.XUserCourseRepository.UpdateOne(userCourse)
 	if err != nil {
 		return fmt.Errorf("failed to update user course: %w", err)
 	}

@@ -73,7 +73,7 @@ func main() {
 	cursoController := controller.NewCursoController(cursoService, comentarioClaseService, claseService)
 
 	cursoUsuarioRepositorio := repository.NewCursoUsuarioRepositoryImpl(clientDB)
-	cursoUsuarioService := service.NewXUserCourseServiceImpl(cursoUsuarioRepositorio, userService)
+	cursoUsuarioService := service.NewXUserCourseServiceImpl(cursoUsuarioRepositorio, userService, cursoService)
 	cursoUsuarioController := controller.NewUserCursoController(cursoUsuarioService)
 
 	routes := gin.Default()

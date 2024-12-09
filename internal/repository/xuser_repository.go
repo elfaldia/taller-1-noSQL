@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"time"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
@@ -33,39 +33,22 @@ func NewUserRepositoryImpl(userCollection *dynamodb.Client) UserRepository {
 
 // FindAll implements UserRepository.
 func (u *UserRepositoryImpl) FindAll() (users []model.User, err error) {
-	
-	var response *dynamodb.ScanOutput
 
+	input := &dynamodb.ScanInput{
+		TableName: &u.tableName,
+	}
 
-	expr, err := expression.NewBuilder().Build()
+	result, err := u.UserCollection.Scan(context.TODO(), input)
 	if err != nil {
-		return users, err
+		return nil, fmt.Errorf("failed to scan table: %w", err)
 	}
 
-	scanPaginator := dynamodb.NewScanPaginator(u.UserCollection, &dynamodb.ScanInput{
-		TableName:                 aws.String(u.tableName),
-		ExpressionAttributeNames:  expr.Names(),
-	})
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10) 
-	defer cancel()
-
-	for scanPaginator.HasMorePages() {
-		response, err = scanPaginator.NextPage(ctx)
-		if err != nil {
-			return []model.User{}, err
-		} else {
-			var userPage []model.User
-			err = attributevalue.UnmarshalListOfMaps(response.Items, &userPage)
-			if err != nil {
-				return []model.User{}, err
-			} else {
-				users = append(users, userPage...)
-			}
-		}
+	err = attributevalue.UnmarshalListOfMaps(result.Items, &users)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal scan result items: %w", err)
 	}
 
-	return users, err
+	return users, nil
 
 }
 
