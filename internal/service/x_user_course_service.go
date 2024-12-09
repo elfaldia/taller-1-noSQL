@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
@@ -107,6 +108,8 @@ func (u *XUserCourseServiceImpl) UpdateCurso(request *request.UpdateCurso) error
 	if err != nil {
 		return err
 	}
+
+	log.Printf("%v", cantidadTotal)
 
 	if cantidadTotal < request.ClasesVistas {
 		return fmt.Errorf("clases vistas no puede ser mayor que el total de clases del curso")
