@@ -71,6 +71,10 @@ func main() {
 	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, validate, db, unidadService, claseService)
 	cursoController := controller.NewCursoController(cursoService, comentarioClaseService, claseService)
 
+	cursoUsuarioRepositorio := repository.NewCursoUsuarioRepositoryImpl(clientDB)
+	cursoUsuarioService := service.NewXUserCourseServiceImpl(cursoUsuarioRepositorio)
+	cursoUsuarioController := controller.NewUserCursoController(cursoUsuarioService)
+
 	routes := gin.Default()
 	docs.SwaggerInfo.BasePath = ""
 
@@ -80,6 +84,7 @@ func main() {
 	CursoRouter(routes, cursoController, unidadController)
 	UnidadRouter(routes, unidadController, claseController)
 	ClaseRouter(routes, claseController, comentarioClaseController)
+	UserCursoRouter(routes, cursoUsuarioController)
 
 	server := &http.Server{
 		Addr:           ":8080",

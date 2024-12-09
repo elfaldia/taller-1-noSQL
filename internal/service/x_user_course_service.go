@@ -14,7 +14,7 @@ type XUserCourseService interface {
 	UpdateCurso(*request.UpdateCurso) error
 	FindAll() ([]response.UserCourseResponse, error)
 	FindById(string) ([]response.UserCourseResponse, error)
-	DeleteCurso(string) error
+	DeleteCurso(string, string) error
 }
 
 type XUserCourseServiceImpl struct {
@@ -27,8 +27,8 @@ func NewXUserCourseServiceImpl(xUserCourseRepository repository.CursoUsuarioRepo
 	}
 }
 
-func (u *XUserCourseServiceImpl) DeleteCurso(userId string) error {
-	return u.XUserCourseRepository.DeleteOne(userId)
+func (u *XUserCourseServiceImpl) DeleteCurso(userId string, cursoName string) error {
+	return u.XUserCourseRepository.DeleteOne(userId, cursoName)
 }
 
 func (u *XUserCourseServiceImpl) FindAll() (users []response.UserCourseResponse, err error) {

@@ -16,7 +16,7 @@ type CursoUsuarioRepository interface {
 	FindById(userId string) ([]model.UserCourse, error)
 	InsertOne(userCourse model.UserCourse) (model.UserCourse, error)
 	UpdateOne(userCourse model.UserCourse) (model.UserCourse, error)
-	DeleteOne(string) error
+	DeleteOne(string, string) error
 }
 
 type CursoUsuarioRepositoryImpl struct {
@@ -84,9 +84,10 @@ func (u *CursoUsuarioRepositoryImpl) UpdateOne(userCourse model.UserCourse) (mod
 	return userCourse, nil
 }
 
-func (u *CursoUsuarioRepositoryImpl) DeleteOne(userId string) error {
+func (u *CursoUsuarioRepositoryImpl) DeleteOne(userId string, cursoName string) error {
 	userCourse := model.UserCourse{
-		UserId: userId,
+		UserId:     userId,
+		CourseName: cursoName,
 	}
 
 	key, err := userCourse.GetKey()
