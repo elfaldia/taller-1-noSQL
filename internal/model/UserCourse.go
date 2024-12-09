@@ -28,7 +28,7 @@ func (uc UserCourse) GetKey() (map[string]types.AttributeValue, error) {
 		if err != nil {
 			return nil, err
 		}
-		key["CourseId"] = CourseId
+		key["CourseName"] = CourseId
 	}
 
 	return key, nil

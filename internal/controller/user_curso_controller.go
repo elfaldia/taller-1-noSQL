@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/elfaldia/taller-noSQL/internal/request"
@@ -116,6 +117,8 @@ func (controller *UserCursoController) UpdateOne(ctx *gin.Context) {
 func (controller *UserCursoController) DeleteOne(ctx *gin.Context) {
 	id := ctx.Param("user_id")
 	cursoName := ctx.Param("curso_name")
+
+	log.Printf("%s, %s", id, cursoName)
 
 	err := controller.UserCursoService.DeleteCurso(id, cursoName)
 	if err != nil {
