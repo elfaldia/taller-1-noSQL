@@ -19,8 +19,15 @@ func NewUserController(service service.UserService) *UserController {
 }
 
 
-
-
+// @BasePath /user
+// @Summary Devuelve todos los users de la base de datos
+// @Description get users
+// @Tags user
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.Response
+// @Failure 500 {object} response.ErrorResponse
+// @Router /user [get]
 func (controller * UserController) FindAll(ctx *gin.Context) {
 
 	data, err := controller.UserService.FindAll()
@@ -42,6 +49,16 @@ func (controller * UserController) FindAll(ctx *gin.Context) {
 }
 
 
+// @BasePath /curso
+// @Summary Devuelve un user
+// @Description get user a partir del ID
+// @Tags user
+// @Param user_id path string true "email"
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.Response
+// @Failure 404 {object} response.ErrorResponse
+// @Router /user/{user_id} [get]
 func (controller *UserController) FindById(ctx *gin.Context) {
 	id := ctx.Param("user_id")
 
@@ -63,6 +80,17 @@ func (controller *UserController) FindById(ctx *gin.Context) {
 }
 
 
+// @BasePath /user
+// @Summary Crea un user
+// @Description crea un user con todos sus componentes
+// @Tags user
+// @Param  curso body request.RegisterUserRequest true "json del curso"
+// @Accept json
+// @Produce json
+// @Success 201 {object} response.Response
+// @Failure 404 {object} response.ErrorResponse
+// @Failure 500 {object} response.ErrorResponse
+// @Router /user [post]
 func (controller *UserController) CreateUser(ctx *gin.Context) {
 	var req *request.RegisterUserRequest
 
@@ -94,7 +122,15 @@ func (controller *UserController) CreateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, res)
 }
 
-
+// DeleteUser godoc
+// @Summary Delete a user
+// @Description Deletes a user by their user ID.
+// @Tags user
+// @Param user_id path string true "User ID"
+// @Produce json
+// @Success 200 {object} response.Response "Success Response"
+// @Failure 500 {object} response.ErrorResponse "Internal Server Error"
+// @Router /user/{user_id} [delete]
 func (controller *UserController) DeleteUser(ctx *gin.Context) {
 
 	userId := ctx.Param("user_id")
@@ -116,7 +152,17 @@ func (controller *UserController) DeleteUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-
+// Login godoc
+// @Summary User login
+// @Description Authenticates a user with their credentials.
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param request body request.LoginRequest true "Login Request"
+// @Success 200 {object} response.Response "Success Response"
+// @Failure 400 {object} response.ErrorResponse "Bad Request"
+// @Failure 500 {object} response.ErrorResponse "Internal Server Error"
+// @Router /user/login [post]
 func (controller *UserController) Login(ctx *gin.Context) {
 
 
@@ -149,9 +195,6 @@ func (controller *UserController) Login(ctx *gin.Context) {
 		Data:   data,
 	}
 	ctx.JSON(http.StatusOK, res)
-
-
-
 
 }
 

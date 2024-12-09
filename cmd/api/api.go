@@ -33,3 +33,14 @@ func ClaseRouter(service *gin.Engine, claseController *controller.ClaseControlle
 	router.GET("/:clase_id/comentarios", comentarioClaseController.FindAllByIdClase)
 	router.GET("/comentarios/:comentario_id", comentarioClaseController.FindById)
 }
+
+
+func UserRouter(service *gin.Engine, userController *controller.UserController) {
+	router := service.Group("/user")
+
+	router.GET("", userController.FindAll)
+	router.GET("/:user_id", userController.FindById)
+	router.POST("", userController.CreateUser)
+	router.POST("/login", userController.Login)
+	router.DELETE("/:user_id", userController.DeleteUser)
+}

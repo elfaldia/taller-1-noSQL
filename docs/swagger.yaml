@@ -79,6 +79,30 @@ definitions:
     - nombre
     - unidades
     type: object
+  request.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  request.RegisterUserRequest:
+    properties:
+      email:
+        type: string
+      nombre:
+        type: string
+      password:
+        minLength: 5
+        type: string
+    required:
+    - email
+    - nombre
+    - password
+    type: object
   request.UnidadRequest:
     properties:
       clases:
@@ -245,14 +269,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: crea un curso con todos sus componentes
+      description: crea un user con todos sus componentes
       parameters:
       - description: json del curso
         in: body
         name: curso
         required: true
         schema:
-          $ref: '#/definitions/request.CreateCursoRequest'
+          $ref: '#/definitions/request.RegisterUserRequest'
       produces:
       - application/json
       responses:
@@ -268,9 +292,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/response.ErrorResponse'
-      summary: Crea un curso
+      summary: Crea un user
       tags:
-      - curso
+      - user
   /curso/{curso_id}:
     get:
       consumes:
@@ -353,6 +377,31 @@ paths:
       summary: Agrega comentario a un curso
       tags:
       - curso
+  /curso/{user_id}:
+    get:
+      consumes:
+      - application/json
+      description: get user a partir del ID
+      parameters:
+      - description: email
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Devuelve un user
+      tags:
+      - user
   /ruta-para-rellenar-base:
     get:
       description: crear cursos
@@ -435,4 +484,76 @@ paths:
       summary: get clases por unidad
       tags:
       - unidad
+  /user:
+    get:
+      consumes:
+      - application/json
+      description: get users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Devuelve todos los users de la base de datos
+      tags:
+      - user
+  /users/{user_id}:
+    delete:
+      description: Deletes a user by their user ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Delete a user
+      tags:
+      - user
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a user with their credentials.
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: User login
+      tags:
+      - user
 swagger: "2.0"
