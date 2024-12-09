@@ -67,8 +67,34 @@ func (u *UserServiceImpl) FindById( userId string) (response.UserResponse, error
 }
 
 // LoginUser implements UserService.
-func (u *UserServiceImpl) LoginUser(*request.LoginRequest) (response.LoginResponse, error) {
-	panic("unimplemented")
+func (u *UserServiceImpl) LoginUser(req *request.LoginRequest) (response.LoginResponse, error) {
+	
+	email := req.Email
+	pass := req.Password
+
+	user, err := u.UserRepository.FindById(email)
+
+	if err != nil {
+		return response.LoginResponse{}, err 
+	}
+
+	valid := u.CheckPassword(user.Clave, pass)
+
+	if valid {
+		return response.LoginResponse{
+			Token: "a",
+			Nombre: user.Nombre,
+			Email: user.Email,
+			Success: true,
+		}, nil
+	}
+
+	return response.LoginResponse{
+		Success: false,
+	}, nil
+
+
+
 }
 
 // RegisterUser implements UserService.

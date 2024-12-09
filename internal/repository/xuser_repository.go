@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/elfaldia/taller-noSQL/internal/model"
-	"github.com/google/uuid"
 )
 
 type UserRepository interface {
@@ -123,7 +122,7 @@ func (u *UserRepositoryImpl) FindById(userId string) (user model.User, err error
 // InsertOne implements UserRepository.
 func (u *UserRepositoryImpl) InsertOne(user model.User) (model.User, error) {
 
-	user.UserId = uuid.NewString()
+	user.UserId = user.Email
 
 	av, err := attributevalue.MarshalMap(user)
 	if err != nil {

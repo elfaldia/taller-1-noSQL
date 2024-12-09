@@ -7,4 +7,5 @@ type LoginResponse struct {
 	Nombre  string `json:"nombre"`
 	Email   string `json:"email"`
 	Message string `json:"message"`
+	Success bool   `json:success`
 }
