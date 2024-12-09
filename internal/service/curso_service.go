@@ -207,15 +207,21 @@ func (c *CursoServiceImpl) GetRandomId() (primitive.ObjectID, error) {
 
 func (c *CursoServiceImpl) GetCantidadClases(cursoId string) (int, error) {
 
-	/*unidades, err := c.UnidadService.FindByIdCurso(cursoId)
+	unidades, err := c.UnidadService.FindByIdCurso(cursoId)
 	if err != nil {
 		return 0, err
 	}
 
+	cantidad_clases := 0
 
-	//cantidad_clases := 0
-	*/
+	for _, unidad := range unidades {
+		cant, err := c.ClaseService.FindAllByIdUnidad(unidad.Id.String())
+		if err != nil {
+			return 0, err
+		}
+		cantidad_clases = cantidad_clases + len(cant)
+	}
 
-	panic("dvsdsfdsf")
+	return cantidad_clases, nil
 
 }
