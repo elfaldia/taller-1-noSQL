@@ -78,8 +78,8 @@ func (u *XUserCourseServiceImpl) AgregarCurso(request *request.AgregarCurso) err
 		return fmt.Errorf("failed to find user: %w", err)
 	}
 
-	time := time.Now()
-	formatedTime := time.Format("16-10-2005")
+	current_time := time.Now()
+	formatedTime := current_time.Format("2006-January-02")
 
 	userCourse := model.UserCourse{
 

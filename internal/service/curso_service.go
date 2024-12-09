@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"log"
 	"math/rand"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
@@ -213,9 +214,10 @@ func (c *CursoServiceImpl) GetCantidadClases(cursoId string) (int, error) {
 	}
 
 	cantidad_clases := 0
-
 	for _, unidad := range unidades {
-		cant, err := c.ClaseService.FindAllByIdUnidad(unidad.Id.String())
+
+		log.Printf("%s", unidad.Id.Hex())
+		cant, err := c.ClaseService.FindAllByIdUnidad(unidad.Id.Hex())
 		if err != nil {
 			return 0, err
 		}
