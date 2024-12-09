@@ -100,6 +100,9 @@ func (u *UserServiceImpl) LoginUser(req *request.LoginRequest) (response.LoginRe
 func (u *UserServiceImpl) RegisterUser(userReq *request.RegisterUserRequest) (err error) {
 
 	userF, err := u.UserRepository.FindById(userReq.Email)
+	if err != nil {
+		return err
+	}
 
 	if (userF == model.User{}) {
 		return fmt.Errorf("usuario ya existente")
