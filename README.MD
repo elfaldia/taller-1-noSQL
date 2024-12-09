@@ -42,3 +42,56 @@ Para iniciar el proyecto, ejecuta el siguiente comando dentro del directorio del
 Una vez iniciado el proyecto, puedes acceder a la documentación a través del siguiente enlace:
 
 [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
+
+
+# Implementación Prueba 
+
+Se utilizo dynamoDB utilizando los servicios de AWS, las claves de para acceder a dynamodb se utilizo 
+direnv.
+
+## Implementar direnv en tu PC
+El siguiente enlace muestra los pasos para tener direnv en windows
+```
+https://gist.github.com/rmtuckerphx/4ace28c1605300462340ffa7b7001c6d
+```
+luego de seguir los pasos en el inicio del proyecto crear el archivo
+```
+.envrc
+```
+En ese archivo .envrc agregar lo siguiente:
+
+export aws_access_key_id="<access_key_id>"
+export aws_secret_access_key="<aws_secret_access_key>"
+export region="sa-east-1"
+
+Las claves de acceso se encuentran en el informe que acompaña este trabajo
+
+
+Las rutas nuevas implementadas para los requerimientos de la prueba:
+```
+Para registro de usuario
+-------------
+	router := service.Group("/user")
+	router.GET("", userController.FindAll)
+	router.GET("/:user_id", userController.FindById)
+	router.POST("", userController.CreateUser)
+	router.POST("/login", userController.Login)
+	router.DELETE("/:user_id", userController.DeleteUser)
+------------------------------------------------------
+Para cursos-usuerio
+-----------------------------------
+	router := service.Group("/user_curso")
+	router.GET("", userCursoController.FindAll)
+	router.GET("/:user_id", userCursoController.FindByIdUser)
+	router.POST("", userCursoController.CreateOne)
+	router.DELETE("/:user_id/:curso_name", userCursoController.DeleteOne)
+	router.PATCH("", userCursoController.UpdateOne)
+```
+
+
+
+
+
+
+
+
