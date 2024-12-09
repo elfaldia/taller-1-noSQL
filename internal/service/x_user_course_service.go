@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
 	"github.com/elfaldia/taller-noSQL/internal/repository"
@@ -67,10 +68,17 @@ func (u *XUserCourseServiceImpl) FindById(userId string) ([]response.UserCourseR
 }
 
 func (u *XUserCourseServiceImpl) AgregarCurso(request *request.AgregarCurso) error {
+
+	time := time.Now()
+	formatedTime := time.Format("16-10-2005")
+
 	userCourse := model.UserCourse{
-		UserId:     request.UserId,
-		CourseName: request.CourseName,
-		State:      request.State,
+
+		UserId:       request.UserId,
+		CourseName:   request.CourseName,
+		State:        request.State,
+		StartDate:    formatedTime,
+		ClasesVistas: 0,
 	}
 
 	_, err := u.XUserCourseRepository.InsertOne(userCourse)
@@ -83,8 +91,13 @@ func (u *XUserCourseServiceImpl) AgregarCurso(request *request.AgregarCurso) err
 
 func (u *XUserCourseServiceImpl) UpdateCurso(request *request.UpdateCurso) error {
 
+	if(request.ClasesVistas < 0 ) {
+		return fmt.Errorf("clases vistas no puede ser menor que 0")
+	}
+
 	userCourse := model.UserCourse{
 		State: request.State,
+		ClasesVistas: request.ClasesVistas,
 	}
 
 	_, err := u.XUserCourseRepository.UpdateOne(userCourse)

@@ -42,6 +42,8 @@ func UserCursoRouter(service *gin.Engine, userCursoController *controller.UserCu
 	router.POST("", userCursoController.CreateOne)
 	router.DELETE("/:user_id/:curso_name", userCursoController.DeleteOne)
 
+}
+
 func UserRouter(service *gin.Engine, userController *controller.UserController) {
 	router := service.Group("/user")
 
@@ -51,3 +53,4 @@ func UserRouter(service *gin.Engine, userController *controller.UserController) 
 	router.POST("/login", userController.Login)
 	router.DELETE("/:user_id", userController.DeleteUser)
 
+}

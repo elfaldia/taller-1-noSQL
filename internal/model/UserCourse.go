@@ -6,9 +6,11 @@ import (
 )
 
 type UserCourse struct {
-	UserId     string `json:"user_id"`
-	CourseName string `json:"course_name,omitempty"` // omitempty hace que el campo sea opcional en el JSON
-	State      string `json:"state"`
+	UserId       string `json:"user_id"`
+	CourseName   string `json:"course_name,omitempty"` // omitempty hace que el campo sea opcional en el JSON
+	State        string `json:"state"`
+	ClasesVistas int    `json:"clases_vistas"`
+	StartDate    string `json:"start_date"`
 }
 
 func (uc UserCourse) GetKey() (map[string]types.AttributeValue, error) {

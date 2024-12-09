@@ -7,5 +7,6 @@ type AgregarCurso struct {
 }
 
 type UpdateCurso struct {
-	State string `json:"state" `
+	State        string `json:"state" `
+	ClasesVistas int    `json:"clases_vistas"`
 }

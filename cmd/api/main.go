@@ -34,8 +34,7 @@ func main() {
 	clientDB := db.ConnectDynamoDB()
 	log.Println("Cliente DynamoDB inicializado:", clientDB)
 
-	userRepository := repository.NewUserRepositoryImpl(clientDB)
-	_ = service.NewUserServiceImpl(userRepository)
+
 
 	client, err := db.ConnectToDataBase()
 	if err != nil {
@@ -53,6 +52,10 @@ func main() {
 	unidadCollection := db.Collection("unidad")
 	claseCollection := db.Collection("clases")
 	comentarioClaseCollection := db.Collection("comentarios_clase")
+
+	userRepository := repository.NewUserRepositoryImpl(clientDB)
+	userService := service.NewUserServiceImpl(userRepository)
+	userController := controller.NewUserController(userService)
 
 	cursoRepository := repository.NewCursoRepositoryImpl(cursoCollection)
 	unidadRepository := repository.NewUnidadRepositoryImpl(unidadCollection)
@@ -85,6 +88,7 @@ func main() {
 	UnidadRouter(routes, unidadController, claseController)
 	ClaseRouter(routes, claseController, comentarioClaseController)
 	UserCursoRouter(routes, cursoUsuarioController)
+	UserRouter(routes, userController)
 
 	server := &http.Server{
 		Addr:           ":8080",

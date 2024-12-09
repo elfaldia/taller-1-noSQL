@@ -23,6 +23,7 @@ type CursoService interface {
 	GetComentariosByCursoId(cursoID primitive.ObjectID) ([]model.ComentarioCurso, error)
 	DeleteCurso(string)
 	GetRandomId() (primitive.ObjectID, error)
+	GetCantidadClases(string) (int, error)
 }
 
 type CursoServiceImpl struct {
@@ -202,4 +203,19 @@ func (c *CursoServiceImpl) GetRandomId() (primitive.ObjectID, error) {
 	}
 	randomIndex := rand.Intn(len(ids))
 	return ids[randomIndex], nil
+}
+
+func (c *CursoServiceImpl) GetCantidadClases(cursoId string) (int, error) {
+
+	/*unidades, err := c.UnidadService.FindByIdCurso(cursoId)
+	if err != nil {
+		return 0, err
+	}
+
+
+	//cantidad_clases := 0
+	*/
+
+	panic("dvsdsfdsf")
+
 }
