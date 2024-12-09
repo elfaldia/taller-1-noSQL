@@ -34,8 +34,6 @@ func main() {
 	clientDB := db.ConnectDynamoDB()
 	log.Println("Cliente DynamoDB inicializado:", clientDB)
 
-
-
 	client, err := db.ConnectToDataBase()
 	if err != nil {
 		log.Fatalf("Error conectando a MongoDB: %v", err)
@@ -75,7 +73,7 @@ func main() {
 	cursoController := controller.NewCursoController(cursoService, comentarioClaseService, claseService)
 
 	cursoUsuarioRepositorio := repository.NewCursoUsuarioRepositoryImpl(clientDB)
-	cursoUsuarioService := service.NewXUserCourseServiceImpl(cursoUsuarioRepositorio)
+	cursoUsuarioService := service.NewXUserCourseServiceImpl(cursoUsuarioRepositorio, userService)
 	cursoUsuarioController := controller.NewUserCursoController(cursoUsuarioService)
 
 	routes := gin.Default()

@@ -20,11 +20,13 @@ type XUserCourseService interface {
 
 type XUserCourseServiceImpl struct {
 	XUserCourseRepository repository.CursoUsuarioRepository
+	UserService           UserService
 }
 
-func NewXUserCourseServiceImpl(xUserCourseRepository repository.CursoUsuarioRepository) XUserCourseService {
+func NewXUserCourseServiceImpl(xUserCourseRepository repository.CursoUsuarioRepository, userService UserService) XUserCourseService {
 	return &XUserCourseServiceImpl{
 		XUserCourseRepository: xUserCourseRepository,
+		UserService:           userService,
 	}
 }
 
@@ -69,6 +71,11 @@ func (u *XUserCourseServiceImpl) FindById(userId string) ([]response.UserCourseR
 
 func (u *XUserCourseServiceImpl) AgregarCurso(request *request.AgregarCurso) error {
 
+	_, err := u.UserService.FindById(request.UserId)
+	if err != nil {
+		return fmt.Errorf("failed to find user: %w", err)
+	}
+
 	time := time.Now()
 	formatedTime := time.Format("16-10-2005")
 
@@ -81,7 +88,7 @@ func (u *XUserCourseServiceImpl) AgregarCurso(request *request.AgregarCurso) err
 		ClasesVistas: 0,
 	}
 
-	_, err := u.XUserCourseRepository.InsertOne(userCourse)
+	_, err = u.XUserCourseRepository.InsertOne(userCourse)
 	if err != nil {
 		return fmt.Errorf("failed to insert user course: %w", err)
 	}
@@ -91,12 +98,12 @@ func (u *XUserCourseServiceImpl) AgregarCurso(request *request.AgregarCurso) err
 
 func (u *XUserCourseServiceImpl) UpdateCurso(request *request.UpdateCurso) error {
 
-	if(request.ClasesVistas < 0 ) {
+	if request.ClasesVistas < 0 {
 		return fmt.Errorf("clases vistas no puede ser menor que 0")
 	}
 
 	userCourse := model.UserCourse{
-		State: request.State,
+		State:        request.State,
 		ClasesVistas: request.ClasesVistas,
 	}
 
