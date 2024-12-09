@@ -2,6 +2,8 @@ package service
 
 import (
 	"fmt"
+	"log"
+	"reflect"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
 	"github.com/elfaldia/taller-noSQL/internal/repository"
@@ -104,7 +106,9 @@ func (u *UserServiceImpl) RegisterUser(userReq *request.RegisterUserRequest) (er
 		return err
 	}
 
-	if (userF == model.User{}) {
+	log.Printf("%v", userF)
+
+	if (!reflect.DeepEqual(userF, model.User{})) {
 		return fmt.Errorf("usuario ya existente")
 	}
 
