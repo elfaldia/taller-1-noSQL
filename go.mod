@@ -37,6 +37,7 @@ require (
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/neo4j/neo4j-go-driver/v5 v5.27.0 // indirect
 	golang.org/x/tools v0.26.0 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 )
