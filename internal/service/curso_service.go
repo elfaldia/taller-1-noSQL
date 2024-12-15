@@ -1,7 +1,6 @@
 package service
 
 import (
-	"context"
 	"errors"
 	"log"
 	"math/rand"
@@ -11,7 +10,6 @@ import (
 	"github.com/elfaldia/taller-noSQL/internal/request"
 	"github.com/elfaldia/taller-noSQL/internal/response"
 	"github.com/go-playground/validator"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -21,22 +19,24 @@ type CursoService interface {
 	FindAll() ([]response.CursoReponse, error)
 	FindById(string) (response.CursoReponse, error)
 	AddComentarioCurso(comentario model.ComentarioCurso) error
-	GetComentariosByCursoId(cursoID primitive.ObjectID) ([]model.ComentarioCurso, error)
+	GetComentariosByCursoId(cursoID string) ([]model.ComentarioCurso, error)
 	DeleteCurso(string)
 	GetRandomId() (primitive.ObjectID, error)
 	GetCantidadClases(string) (int, error)
 }
 
 type CursoServiceImpl struct {
-	CursoRepository repository.CursoRepository
-	UnidadService   UnidadService
-	ClaseService    ClaseService
-	Validate        *validator.Validate
-	db              *mongo.Database
+	CursoRepository      repository.CursoRepository
+	UnidadService        UnidadService
+	ClaseService         ClaseService
+	ComentarioRepository repository.ComentarioRepository
+	Validate             *validator.Validate
+	db                   *mongo.Database
 }
 
 func NewCursoServiceImpl(
 	cursoRepository repository.CursoRepository,
+	comentarioRepository repository.ComentarioRepository,
 	validate *validator.Validate,
 	db *mongo.Database,
 	unidadService UnidadService,
@@ -46,11 +46,12 @@ func NewCursoServiceImpl(
 		return nil, errors.New("validator no puede ser nil")
 	}
 	return &CursoServiceImpl{
-		CursoRepository: cursoRepository,
-		UnidadService:   unidadService,
-		ClaseService:    claseService,
-		Validate:        validate,
-		db:              db, // Asegúrate de pasar la base de datos aquí
+		CursoRepository:      cursoRepository,
+		ComentarioRepository: comentarioRepository,
+		UnidadService:        unidadService,
+		ClaseService:         claseService,
+		Validate:             validate,
+		db:                   db,
 	}, nil
 }
 
@@ -149,33 +150,24 @@ func (c *CursoServiceImpl) CreateCurso(req *request.CreateCursoRequest) (idCurso
 	return curso.Id.Hex(), nil
 }
 
-func (s *CursoServiceImpl) AddComentarioCurso(comentario model.ComentarioCurso) error {
-
-	collection := s.db.Collection("comentarios_curso")
-
-	_, err := collection.InsertOne(context.TODO(), comentario)
-	if err != nil {
-		return err
+func (c *CursoServiceImpl) AddComentarioCurso(comentario model.ComentarioCurso) error {
+	if comentario.ComentarioID == primitive.NilObjectID {
+		comentario.ComentarioID = primitive.NewObjectID()
 	}
 
-	return nil
+	if comentario.IdCurso == primitive.NilObjectID || comentario.IdUsuario == primitive.NilObjectID {
+		return errors.New("id_curso y id_usuario no pueden ser vacíos")
+	}
+
+	return c.ComentarioRepository.InsertOne(comentario)
 }
 
-func (s *CursoServiceImpl) GetComentariosByCursoId(cursoID primitive.ObjectID) ([]model.ComentarioCurso, error) {
-	var comentarios []model.ComentarioCurso
-	collection := s.db.Collection("comentarios_curso")
-
-	filter := bson.M{"id_curso": cursoID}
-	cursor, err := collection.Find(context.TODO(), filter)
-	if err != nil {
-		return nil, err
+func (c *CursoServiceImpl) GetComentariosByCursoId(cursoID string) ([]model.ComentarioCurso, error) {
+	if _, err := primitive.ObjectIDFromHex(cursoID); err != nil {
+		return nil, errors.New("cursoID inválido")
 	}
 
-	if err = cursor.All(context.TODO(), &comentarios); err != nil {
-		return nil, err
-	}
-
-	return comentarios, nil
+	return c.ComentarioRepository.FindByCurso(cursoID)
 }
 
 func (c *CursoServiceImpl) DeleteCurso(cursoId string) {
@@ -225,5 +217,4 @@ func (c *CursoServiceImpl) GetCantidadClases(cursoId string) (int, error) {
 	}
 
 	return cantidad_clases, nil
-
 }
