@@ -63,13 +63,16 @@ func main() {
 	unidadService, _ := service.NewUnidadServiceImpl(unidadRepository, validate)
 	unidadController := controller.NewUnidadController(unidadService)
 
+	ComentarioRepository := repository.NewComentarioRepositoryImpl() //añadir Neoj4
+	comentarioController := controller.NewComentarioController()     //añadir Neoj4
+
 	claseService, _ := service.NewClaseServiceImpl(claseRepository, validate)
 	claseController := controller.NewClaseController(claseService)
 
 	comentarioClaseService, _ := service.NewComentarioClaseServiceImpl(comentarioClaseRepository, claseService, validate)
 	comentarioClaseController := controller.NewComentarioClaseController(comentarioClaseService)
 
-	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, validate, db, unidadService, claseService)
+	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, ComentarioRepository, validate, db, unidadService, claseService)
 	cursoController := controller.NewCursoController(cursoService, comentarioClaseService, claseService)
 
 	cursoUsuarioRepositorio := repository.NewCursoUsuarioRepositoryImpl(clientDB)
@@ -82,7 +85,7 @@ func main() {
 	routes.GET("ruta-para-rellenar-base", cursoController.RellenarBase)
 	routes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	CursoRouter(routes, cursoController, unidadController)
+	CursoRouter(routes, cursoController, unidadController, comentarioController)
 	UnidadRouter(routes, unidadController, claseController)
 	ClaseRouter(routes, claseController, comentarioClaseController)
 	UserCursoRouter(routes, cursoUsuarioController)

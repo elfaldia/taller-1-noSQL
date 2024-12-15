@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CursoRouter(service *gin.Engine, cursoController *controller.CursoController, unidadController *controller.UnidadController) {
+func CursoRouter(service *gin.Engine, cursoController *controller.CursoController, unidadController *controller.UnidadController, comentarioController *controller.ComentarioController) {
 	router := service.Group("/curso")
 
 	router.GET("", cursoController.FindAll)
@@ -15,6 +15,8 @@ func CursoRouter(service *gin.Engine, cursoController *controller.CursoControlle
 	router.POST("/:curso_id/comentarios", cursoController.AddComentarioCurso)
 	router.GET("/:curso_id/unidades", unidadController.FindByIdCurso)
 
+	router.POST("/:curso_id/comentarios", comentarioController.AddComentario)
+	router.GET("/:curso_id/comentarios", comentarioController.GetComentariosByCurso)
 }
 
 func UnidadRouter(service *gin.Engine, unidadController *controller.UnidadController, claseController *controller.ClaseController) {
