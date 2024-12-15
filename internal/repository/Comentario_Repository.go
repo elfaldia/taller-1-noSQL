@@ -40,33 +40,38 @@ func (r *ComentarioRepositoryImpl) InsertOne(comentario model.ComentarioCurso) e
 		"dislikes":      comentario.Dislikes,
 	})
 
-	_, err := session.Run(ctx, `
-		CREATE (c:Comentario {
-			comentario_id: $comentario_id,
-			curso_id: $id_curso,
-			usuario_id: $id_usuario,
-			nombre: $nombre,
-			fecha: $fecha,
-			titulo: $titulo,
-			detalle: $detalle,
-			likes: $likes,
-			dislikes: $dislikes
-		})`,
-		map[string]interface{}{
-			"comentario_id": comentario.ComentarioID,
-			"curso_id":      comentario.IdCurso,
-			"usuario_id":    comentario.IdUsuario,
-			"nombre":        comentario.Nombre,
-			"fecha":         comentario.Fecha,
-			"titulo":        comentario.Titulo,
-			"detalle":       comentario.Detalle,
-			"likes":         comentario.Likes,
-			"dislikes":      comentario.Dislikes,
-		})
+	_, err := session.ExecuteWrite(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
+		query := `
+			MERGE (u:User {UserId: $userId})
+			MERGE (c:Course {CourseName: $courseName})
+			MERGE (u)-[r:COMENTA]->(c)
+			SET 
+				r.nombre = $nombre,
+				r.fecha = $fecha,
+				r.titulo = $titulo,
+				r.detalle = $detalle,
+				r.likes = $likes,
+				r.dislikes = $dislikes
+		`
+
+		params := map[string]interface{}{
+			"userId":     comentario.IdUsuario,
+			"courseName": comentario.IdCurso,
+			"fecha":      comentario.Fecha,
+			"nombre":     comentario.Nombre,
+			"titulo":     comentario.Titulo,
+			"detalle":    comentario.Detalle,
+			"likes":      comentario.Likes,
+			"dislikes":   comentario.Dislikes,
+		}
+		_, err := tx.Run(ctx, query, params)
+		return nil, err
+	})
 
 	if err != nil {
-		return fmt.Errorf("failed to insert comment: %w", err)
+		return fmt.Errorf("falied to add comments in course: %w", err)
 	}
+
 	return nil
 }
 
