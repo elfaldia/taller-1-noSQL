@@ -69,7 +69,7 @@ func main() {
 	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, validate, db, unidadService, claseService)
 	cursoController := controller.NewCursoController(cursoService, comentarioClaseService, claseService)
 
-	cursoUsuarioRepositorio := repository.NewCursoUsuarioRepositoryImpl(clientDB)
+	cursoUsuarioRepositorio := repository.NewCursoUsuarioRepositoryImpl(clientDB, driverNeo4j)
 	cursoUsuarioService := service.NewXUserCourseServiceImpl(cursoUsuarioRepositorio, userService, cursoService)
 	cursoUsuarioController := controller.NewUserCursoController(cursoUsuarioService)
 

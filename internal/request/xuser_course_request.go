@@ -12,3 +12,7 @@ type UpdateCurso struct {
 	State        string `json:"state" `
 	ClasesVistas int    `json:"clases_vistas"`
 }
+
+type AgregarRating struct {
+	Rating int `json:"rating"`
+}

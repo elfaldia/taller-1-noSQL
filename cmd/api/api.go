@@ -42,6 +42,8 @@ func UserCursoRouter(service *gin.Engine, userCursoController *controller.UserCu
 	router.POST("", userCursoController.CreateOne)
 	router.DELETE("/:user_id/:curso_name", userCursoController.DeleteOne)
 	router.PATCH("", userCursoController.UpdateOne)
+	router.POST("/:user_id/:curso_name", userCursoController.AddCourseRating)
+	router.GET("/avg/:curso_name", userCursoController.GetCourseRating)
 }
 
 func UserRouter(service *gin.Engine, userController *controller.UserController) {

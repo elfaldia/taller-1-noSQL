@@ -28,6 +28,5 @@ func ConnectNeo4jDB() *neo4j.DriverWithContext {
 	if err != nil {
 		panic(err)
 	}
-	defer driver.Close(ctx)
 	return &driver
 }
