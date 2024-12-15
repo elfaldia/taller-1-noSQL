@@ -17,6 +17,8 @@ type XUserCourseService interface {
 	FindAll() ([]response.UserCourseResponse, error)
 	FindById(string) ([]response.UserCourseResponse, error)
 	DeleteCurso(string, string) error
+	AddCourseRating(userId string, courseName string, rating int) error
+	GetCourseRating(courseName string) (float64, error)
 }
 
 type XUserCourseServiceImpl struct {
@@ -128,4 +130,29 @@ func (u *XUserCourseServiceImpl) UpdateCurso(request *request.UpdateCurso) error
 	}
 
 	return nil
+}
+
+func (u *XUserCourseServiceImpl) AddCourseRating(userId string, courseName string, rating int) error {
+
+	_, err := u.UserService.FindById(userId)
+	if err != nil {
+		return err
+	}
+
+	_, err = u.CursoService.FindById(courseName)
+	if err != nil {
+		return err
+	}
+	return u.XUserCourseRepository.AddCourseRating(userId, courseName, rating)
+}
+
+// GetCourseRating implements XUserCourseService.
+func (u *XUserCourseServiceImpl) GetCourseRating(courseName string) (float64, error) {
+
+	_, err := u.CursoService.FindById(courseName)
+	if err != nil {
+		return -1, err
+	}
+	return u.XUserCourseRepository.GetCourseRating(courseName)
+
 }

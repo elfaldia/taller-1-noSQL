@@ -2,10 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/elfaldia/taller-noSQL/docs"
@@ -27,9 +25,8 @@ func main() {
 		log.Fatalf("Error cargando archivo .envrc: %v", err1)
 	}
 
-	fmt.Printf("aws_access_key_id: %s\n", os.Getenv("aws_access_key_id"))
-	fmt.Printf("aws_secret_access_key: %s\n", os.Getenv("aws_secret_access_key"))
-	fmt.Printf("region: %s\n", os.Getenv("region"))
+	driverNeo4j := db.ConnectNeo4jDB()
+	log.Println("Cliente Neo4j inicializado correctamente: ", driverNeo4j)
 
 	clientDB := db.ConnectDynamoDB()
 	log.Println("Cliente DynamoDB inicializado:", clientDB)
@@ -75,7 +72,7 @@ func main() {
 	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, ComentarioRepository, validate, db, unidadService, claseService)
 	cursoController := controller.NewCursoController(cursoService, comentarioClaseService, claseService)
 
-	cursoUsuarioRepositorio := repository.NewCursoUsuarioRepositoryImpl(clientDB)
+	cursoUsuarioRepositorio := repository.NewCursoUsuarioRepositoryImpl(clientDB, driverNeo4j)
 	cursoUsuarioService := service.NewXUserCourseServiceImpl(cursoUsuarioRepositorio, userService, cursoService)
 	cursoUsuarioController := controller.NewUserCursoController(cursoUsuarioService)
 

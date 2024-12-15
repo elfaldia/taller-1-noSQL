@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/elfaldia/taller-noSQL/internal/model"
+	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
 type CursoUsuarioRepository interface {
@@ -17,17 +18,21 @@ type CursoUsuarioRepository interface {
 	InsertOne(userCourse model.UserCourse) (model.UserCourse, error)
 	UpdateOne(userCourse model.UserCourse) (model.UserCourse, error)
 	DeleteOne(string, string) error
+	AddCourseRating(userId string, courseName string, rating int) error
+	GetCourseRating(courseName string) (float64, error)
 }
 
 type CursoUsuarioRepositoryImpl struct {
 	tableName            string
 	UserCourseCollection *dynamodb.Client
+	DriverNeo4j          *neo4j.DriverWithContext
 }
 
-func NewCursoUsuarioRepositoryImpl(userCourseCollection *dynamodb.Client) CursoUsuarioRepository {
+func NewCursoUsuarioRepositoryImpl(userCourseCollection *dynamodb.Client, userCourseGraph *neo4j.DriverWithContext) CursoUsuarioRepository {
 	return &CursoUsuarioRepositoryImpl{
 		UserCourseCollection: userCourseCollection,
 		tableName:            "CursoUsuario",
+		DriverNeo4j:          userCourseGraph,
 	}
 }
 
@@ -153,3 +158,80 @@ func (u *CursoUsuarioRepositoryImpl) FindById(userId string) ([]model.UserCourse
 
 	return userCourses, nil
 }
+
+func (u *CursoUsuarioRepositoryImpl) AddCourseRating(userId string, courseName string, rating int) error {
+    ctx := context.TODO()
+
+    // Inicia una sesión de escritura
+    session := (*u.DriverNeo4j).NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
+    defer session.Close(ctx)
+
+    _, err := session.ExecuteWrite(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
+        query := `
+            MERGE (u:User {UserId: $userId})
+            MERGE (c:Course {CourseName: $courseName})
+            MERGE (u)-[r:RATED]->(c)
+            SET r.Score = $rating
+        `
+        params := map[string]interface{}{
+            "userId":    userId,
+            "courseName": courseName,
+            "rating":    rating,
+        }
+
+        _, err := tx.Run(ctx, query, params)
+        return nil, err
+    })
+
+    if err != nil {
+        return fmt.Errorf("failed to add course rating: %w", err)
+    }
+    return nil
+}
+
+func (u *CursoUsuarioRepositoryImpl) GetCourseRating(courseName string) (float64, error) {
+    ctx := context.TODO()
+
+    session := (*u.DriverNeo4j).NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})
+    defer session.Close(ctx)
+
+    result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (interface{}, error) {
+        query := `
+            MATCH (:Course {CourseName: $courseName})<-[r:RATED]-(:User)
+            RETURN avg(r.Score) as averageRating
+        `
+        params := map[string]interface{}{
+            "courseName": courseName,
+        }
+
+        records, err := tx.Run(ctx, query, params)
+        if err != nil {
+            return nil, err
+        }
+
+        if records.Next(ctx) {
+            value, ok := records.Record().Get("averageRating")
+            if !ok {
+                return 0, fmt.Errorf("averageRating not found in the result")
+            }
+
+            if averageRating, isFloat := value.(float64); isFloat {
+                return averageRating, nil
+            }
+            return 0, fmt.Errorf("averageRating is not a float64")
+        }
+
+        return 0, nil // Sin resultados
+    })
+
+    if err != nil {
+        return 0, fmt.Errorf("failed to get course rating: %w", err)
+    }
+
+    if avgRating, ok := result.(float64); ok {
+        return avgRating, nil
+    }
+
+    return 0, fmt.Errorf("unexpected result type")
+}
+

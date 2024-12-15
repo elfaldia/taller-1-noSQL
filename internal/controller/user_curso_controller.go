@@ -137,3 +137,59 @@ func (controller *UserCursoController) DeleteOne(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, res)
 }
+
+
+func (c *UserCursoController) AddCourseRating(ctx *gin.Context) {
+	id := ctx.Param("user_id")
+	cursoName := ctx.Param("curso_name")
+
+	var req request.AgregarRating
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, response.ErrorResponseUnidad{
+			Code:    400,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	if err := c.UserCursoService.AddCourseRating(id, cursoName, req.Rating); err != nil {
+		ctx.JSON(http.StatusBadRequest, response.ErrorResponseUnidad{
+			Code:    500,
+			Message: err.Error(),
+		})
+		return	
+	}
+
+	res := response.Response{
+		Code:   200,
+		Status: "OK",
+		Data:   "Se agrego el rate correctamente",
+	}
+
+	ctx.JSON(http.StatusOK, res)
+
+}
+
+func (c *UserCursoController) GetCourseRating(ctx *gin.Context) {
+	cursoName := ctx.Param("curso_name")
+
+	avg, err := c.UserCursoService.GetCourseRating(cursoName)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, response.ErrorResponseUnidad{
+			Code:    500,
+			Message: err.Error(),
+		})
+		return	
+	}
+
+	res := response.Response{
+		Code:   200,
+		Status: "OK",
+		Data:  avg,
+	}
+
+	ctx.JSON(http.StatusOK, res)
+
+}
+
