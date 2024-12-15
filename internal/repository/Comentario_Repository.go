@@ -44,7 +44,7 @@ func (r *ComentarioRepositoryImpl) InsertOne(comentario model.ComentarioCurso) e
 		query := `
 			MERGE (u:User {UserId: $userId})
 			MERGE (c:Course {CourseName: $courseName})
-			MERGE (u)-[r:COMENTA]->(c)
+			CREATE (u)-[r:COMENTA]->(c)
 			SET 
 				r.nombre = $nombre,
 				r.fecha = $fecha,
