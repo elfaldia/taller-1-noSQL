@@ -151,11 +151,11 @@ func (c *CursoServiceImpl) CreateCurso(req *request.CreateCursoRequest) (idCurso
 }
 
 func (c *CursoServiceImpl) AddComentarioCurso(comentario model.ComentarioCurso) error {
-	if comentario.ComentarioID == primitive.NilObjectID {
-		comentario.ComentarioID = primitive.NewObjectID()
+	if comentario.ComentarioID == "" {
+		comentario.ComentarioID = "newComentarioID" // Puedes generar un nuevo ID aquí, como un UUID o similar
 	}
 
-	if comentario.IdCurso == primitive.NilObjectID || comentario.IdUsuario == primitive.NilObjectID {
+	if comentario.IdCurso == "" || comentario.IdUsuario == "" {
 		return errors.New("id_curso y id_usuario no pueden ser vacíos")
 	}
 

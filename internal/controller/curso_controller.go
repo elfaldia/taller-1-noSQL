@@ -157,7 +157,7 @@ func (controller *CursoController) AddComentarioCurso(ctx *gin.Context) {
 		return
 	}
 
-	comentario.IdCurso = objectIdCurso
+	comentario.IdCurso = objectIdCurso.Hex()
 
 	if err := controller.CursoService.AddComentarioCurso(comentario); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -267,6 +267,7 @@ func (c *CursoController) RellenarBase(ctx *gin.Context) {
 	}
 
 	for _, comentarioCursoReq := range comentarios {
+
 		idCursoRandom, err := c.CursoService.GetRandomId()
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, response.ErrorResponse{
@@ -276,8 +277,9 @@ func (c *CursoController) RellenarBase(ctx *gin.Context) {
 			return
 		}
 
+		// Convierte el ObjectID a string
 		comentarioCurso := model.ComentarioCurso{
-			IdCurso:  idCursoRandom,
+			IdCurso:  idCursoRandom.Hex(),
 			Nombre:   comentarioCursoReq.Nombre,
 			Likes:    comentarioCursoReq.Likes,
 			Dislikes: comentarioCursoReq.Dislikes,
@@ -287,7 +289,6 @@ func (c *CursoController) RellenarBase(ctx *gin.Context) {
 		}
 
 		err = c.CursoService.AddComentarioCurso(comentarioCurso)
-
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, response.ErrorResponse{
 				Code:    http.StatusInternalServerError,

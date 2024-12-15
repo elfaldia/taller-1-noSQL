@@ -3,10 +3,10 @@ package repository
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type ComentarioRepository interface {
@@ -28,7 +28,19 @@ func (r *ComentarioRepositoryImpl) InsertOne(comentario model.ComentarioCurso) e
 	session := r.Driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
 
-	_, err := session.Run(ctx , `
+	log.Printf("Parameters: %v", map[string]interface{}{
+		"comentario_id": comentario.ComentarioID,
+		"id_curso":      comentario.IdCurso,
+		"id_usuario":    comentario.IdUsuario,
+		"nombre":        comentario.Nombre,
+		"fecha":         comentario.Fecha,
+		"titulo":        comentario.Titulo,
+		"detalle":       comentario.Detalle,
+		"likes":         comentario.Likes,
+		"dislikes":      comentario.Dislikes,
+	})
+
+	_, err := session.Run(ctx, `
 		CREATE (c:Comentario {
 			comentario_id: $comentario_id,
 			curso_id: $id_curso,
@@ -36,7 +48,7 @@ func (r *ComentarioRepositoryImpl) InsertOne(comentario model.ComentarioCurso) e
 			nombre: $nombre,
 			fecha: $fecha,
 			titulo: $titulo,
-			contenido: $detalle,
+			detalle: $detalle,
 			likes: $likes,
 			dislikes: $dislikes
 		})`,
@@ -47,7 +59,7 @@ func (r *ComentarioRepositoryImpl) InsertOne(comentario model.ComentarioCurso) e
 			"nombre":        comentario.Nombre,
 			"fecha":         comentario.Fecha,
 			"titulo":        comentario.Titulo,
-			"contenido":     comentario.Detalle,
+			"detalle":       comentario.Detalle,
 			"likes":         comentario.Likes,
 			"dislikes":      comentario.Dislikes,
 		})
@@ -59,18 +71,12 @@ func (r *ComentarioRepositoryImpl) InsertOne(comentario model.ComentarioCurso) e
 }
 
 func (r *ComentarioRepositoryImpl) FindByCurso(cursoID string) ([]model.ComentarioCurso, error) {
-	ctx:= context.TODO()
+	ctx := context.TODO()
 	session := r.Driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})
 	defer session.Close(ctx)
 
-	// Convierte cursoID a ObjectID
-	cursoIDObj, err := primitive.ObjectIDFromHex(cursoID)
-	if err != nil {
-		return nil, fmt.Errorf("invalid curso_id: %w", err)
-	}
-
 	result, err := session.Run(ctx, `
-		MATCH (c:Comentario {id_curso: $id_curso})
+		MATCH (c:Comentario {curso_id: $id_curso})
 		RETURN c.comentario_id, c.usuario_id, c.nombre, c.fecha, c.titulo, c.detalle, c.likes, c.dislikes
 		ORDER BY c.likes DESC`,
 		map[string]interface{}{
@@ -85,45 +91,27 @@ func (r *ComentarioRepositoryImpl) FindByCurso(cursoID string) ([]model.Comentar
 	for result.Next(ctx) {
 		record := result.Record()
 
-		// Convierte comentario_id a primitive.ObjectID
-		comentarioIDStr, ok := record.Values[0].(string)
-		if !ok {
-			return nil, fmt.Errorf("failed to cast comentario_id to string")
-		}
-		comentarioID, err := primitive.ObjectIDFromHex(comentarioIDStr)
-		if err != nil {
-			return nil, fmt.Errorf("invalid comentario_id: %w", err)
-		}
+		// Recuperar y convertir valores
+		comentarioID, _ := record.Get("c.comentario_id")
+		usuarioID, _ := record.Get("c.usuario_id")
+		nombre, _ := record.Get("c.nombre")
+		fecha, _ := record.Get("c.fecha")
+		titulo, _ := record.Get("c.titulo")
+		detalle, _ := record.Get("c.detalle")
+		likes, _ := record.Get("c.likes")
+		dislikes, _ := record.Get("c.dislikes")
 
-		// Convierte usuario_id a primitive.ObjectID
-		usuarioIDStr, ok := record.Values[1].(string)
-		if !ok {
-			return nil, fmt.Errorf("failed to cast usuario_id to string")
-		}
-		usuarioID, err := primitive.ObjectIDFromHex(usuarioIDStr)
-		if err != nil {
-			return nil, fmt.Errorf("invalid usuario_id: %w", err)
-		}
-
-		// Conversión de otros campos
-		nombre, _ := record.Values[2].(string)
-		fecha, _ := record.Values[3].(string)
-		titulo, _ := record.Values[4].(string)
-		detalle, _ := record.Values[5].(string)
-		likes := int(record.Values[6].(int64))
-		dislikes := int(record.Values[7].(int64))
-
-		// Agrega el comentario a la lista
+		// Crear el comentario y añadirlo a la lista
 		comentarios = append(comentarios, model.ComentarioCurso{
-			ComentarioID: comentarioID,
-			IdCurso:      cursoIDObj,
-			IdUsuario:    usuarioID,
-			Nombre:       nombre,
-			Fecha:        fecha,
-			Titulo:       titulo,
-			Detalle:      detalle,
-			Likes:        likes,
-			Dislikes:     dislikes,
+			ComentarioID: comentarioID.(string),
+			IdCurso:      cursoID,
+			IdUsuario:    usuarioID.(string),
+			Nombre:       nombre.(string),
+			Fecha:        fecha.(string),
+			Titulo:       titulo.(string),
+			Detalle:      detalle.(string),
+			Likes:        int(likes.(int64)),
+			Dislikes:     int(dislikes.(int64)),
 		})
 	}
 
