@@ -60,8 +60,7 @@ func main() {
 	unidadService, _ := service.NewUnidadServiceImpl(unidadRepository, validate)
 	unidadController := controller.NewUnidadController(unidadService)
 
-	ComentarioRepository := repository.NewComentarioRepositoryImpl() //añadir Neoj4
-	comentarioController := controller.NewComentarioController()     //añadir Neoj4
+	ComentarioRepository := repository.NewComentarioRepositoryImpl(*driverNeo4j) //añadir Neoj4
 
 	claseService, _ := service.NewClaseServiceImpl(claseRepository, validate)
 	claseController := controller.NewClaseController(claseService)
@@ -71,6 +70,7 @@ func main() {
 
 	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, ComentarioRepository, validate, db, unidadService, claseService)
 	cursoController := controller.NewCursoController(cursoService, comentarioClaseService, claseService)
+	comentarioController := controller.NewComentarioController(cursoService)
 
 	cursoUsuarioRepositorio := repository.NewCursoUsuarioRepositoryImpl(clientDB, driverNeo4j)
 	cursoUsuarioService := service.NewXUserCourseServiceImpl(cursoUsuarioRepositorio, userService, cursoService)

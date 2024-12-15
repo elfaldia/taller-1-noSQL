@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
@@ -15,18 +16,19 @@ type ComentarioRepository interface {
 }
 
 type ComentarioRepositoryImpl struct {
-	Driver neo4j.Driver
+	Driver neo4j.DriverWithContext
 }
 
-func NewComentarioRepositoryImpl(driver neo4j.Driver) ComentarioRepository {
+func NewComentarioRepositoryImpl(driver neo4j.DriverWithContext) ComentarioRepository {
 	return &ComentarioRepositoryImpl{Driver: driver}
 }
 
 func (r *ComentarioRepositoryImpl) InsertOne(comentario model.ComentarioCurso) error {
-	session := r.Driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-	defer session.Close()
+	ctx := context.TODO()
+	session := r.Driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
+	defer session.Close(ctx)
 
-	_, err := session.Run(`
+	_, err := session.Run(ctx , `
 		CREATE (c:Comentario {
 			comentario_id: $comentario_id,
 			curso_id: $id_curso,
@@ -57,8 +59,9 @@ func (r *ComentarioRepositoryImpl) InsertOne(comentario model.ComentarioCurso) e
 }
 
 func (r *ComentarioRepositoryImpl) FindByCurso(cursoID string) ([]model.ComentarioCurso, error) {
-	session := r.Driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})
-	defer session.Close()
+	ctx:= context.TODO()
+	session := r.Driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})
+	defer session.Close(ctx)
 
 	// Convierte cursoID a ObjectID
 	cursoIDObj, err := primitive.ObjectIDFromHex(cursoID)
@@ -66,7 +69,7 @@ func (r *ComentarioRepositoryImpl) FindByCurso(cursoID string) ([]model.Comentar
 		return nil, fmt.Errorf("invalid curso_id: %w", err)
 	}
 
-	result, err := session.Run(`
+	result, err := session.Run(ctx, `
 		MATCH (c:Comentario {id_curso: $id_curso})
 		RETURN c.comentario_id, c.usuario_id, c.nombre, c.fecha, c.titulo, c.detalle, c.likes, c.dislikes
 		ORDER BY c.likes DESC`,
@@ -79,7 +82,7 @@ func (r *ComentarioRepositoryImpl) FindByCurso(cursoID string) ([]model.Comentar
 	}
 
 	var comentarios []model.ComentarioCurso
-	for result.Next() {
+	for result.Next(ctx) {
 		record := result.Record()
 
 		// Convierte comentario_id a primitive.ObjectID
@@ -128,10 +131,11 @@ func (r *ComentarioRepositoryImpl) FindByCurso(cursoID string) ([]model.Comentar
 }
 
 func (r *ComentarioRepositoryImpl) DeleteOne(comentarioID string) error {
-	session := r.Driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-	defer session.Close()
+	ctx := context.TODO()
+	session := r.Driver.NewSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
+	defer session.Close(ctx)
 
-	_, err := session.Run(`
+	_, err := session.Run(ctx, `
 		MATCH (c:Comentario {comentario_id: $comentario_id})
 		DELETE c`,
 		map[string]interface{}{

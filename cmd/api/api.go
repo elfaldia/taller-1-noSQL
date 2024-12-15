@@ -11,12 +11,12 @@ func CursoRouter(service *gin.Engine, cursoController *controller.CursoControlle
 	router.GET("", cursoController.FindAll)
 	router.GET("/:curso_id", cursoController.FindById)
 	router.POST("", cursoController.CreateCurso)
-	router.GET("/:curso_id/comentarios", cursoController.GetComentariosByCursoId)
-	router.POST("/:curso_id/comentarios", cursoController.AddComentarioCurso)
+	// router.GET("/:curso_id/comentarios", cursoController.GetComentariosByCursoId) // *
+	// router.POST("/:curso_id/comentarios", cursoController.AddComentarioCurso) // *
 	router.GET("/:curso_id/unidades", unidadController.FindByIdCurso)
 
-	router.POST("/:curso_id/comentarios", comentarioController.AddComentario)
-	router.GET("/:curso_id/comentarios", comentarioController.GetComentariosByCurso)
+	router.POST("/:curso_id/comentarios", comentarioController.AddComentario) // *
+	router.GET("/:curso_id/comentarios", comentarioController.GetComentariosByCurso) // *
 }
 
 func UnidadRouter(service *gin.Engine, unidadController *controller.UnidadController, claseController *controller.ClaseController) {
