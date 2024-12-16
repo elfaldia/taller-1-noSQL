@@ -59,10 +59,16 @@ luego de seguir los pasos en el inicio del proyecto crear el archivo
 .envrc
 ```
 En ese archivo .envrc agregar lo siguiente:
-
+```
 export aws_access_key_id="<access_key_id>"
 export aws_secret_access_key="<aws_secret_access_key>"
 export region="sa-east-1"
+export NEO4J_URI="<URI>"
+export NEO4J_USERNAME="<USERNAME>"
+export NEO4J_PASSWORD="<PASSWORD>"
+export AURA_INSTANCEID="<INSTANCEID>"
+export AURA_INSTANCENAME="<INSTANCENAME>"
+```
 
 Las claves de acceso se encuentran en el informe que acompaña este trabajo
 
@@ -78,7 +84,7 @@ Para registro de usuario
 	router.POST("/login", userController.Login)
 	router.DELETE("/:user_id", userController.DeleteUser)
 ------------------------------------------------------
-Para cursos-usuerio
+Para cursos-usuario
 -----------------------------------
 	router := service.Group("/user_curso")
 	router.GET("", userCursoController.FindAll)
