@@ -27,6 +27,7 @@ type CursoService interface {
 
 type CursoServiceImpl struct {
 	CursoRepository      repository.CursoRepository
+	UserService          UserService
 	UnidadService        UnidadService
 	ClaseService         ClaseService
 	ComentarioRepository repository.ComentarioRepository
@@ -41,6 +42,7 @@ func NewCursoServiceImpl(
 	db *mongo.Database,
 	unidadService UnidadService,
 	claseService ClaseService,
+	userService UserService,
 ) (service CursoService, err error) {
 	if validate == nil {
 		return nil, errors.New("validator no puede ser nil")
@@ -52,6 +54,7 @@ func NewCursoServiceImpl(
 		ClaseService:         claseService,
 		Validate:             validate,
 		db:                   db,
+		UserService:          userService,
 	}, nil
 }
 
@@ -151,15 +154,25 @@ func (c *CursoServiceImpl) CreateCurso(req *request.CreateCursoRequest) (idCurso
 }
 
 func (c *CursoServiceImpl) AddComentarioCurso(comentario model.ComentarioCurso) error {
-	if comentario.ComentarioID == "" {
-		comentario.ComentarioID = "newComentarioID" // Puedes generar un nuevo ID aquí, como un UUID o similar
-	}
 
 	if comentario.IdCurso == "" || comentario.IdUsuario == "" {
 		return errors.New("id_curso y id_usuario no pueden ser vacíos")
 	}
 
+	res, _ := c.FindById(comentario.IdCurso)
+
+	if (res == response.CursoReponse{}) {
+		return errors.New("el curso debe ser uno válido")
+	}
+
+	res2, _ := c.UserService.FindById(comentario.IdUsuario)
+
+	if (res2 == response.UserResponse{}) {
+		return errors.New("el usuario debe ser uno válido")
+	}
+
 	return c.ComentarioRepository.InsertOne(comentario)
+
 }
 
 func (c *CursoServiceImpl) GetComentariosByCursoId(cursoID string) ([]model.ComentarioCurso, error) {

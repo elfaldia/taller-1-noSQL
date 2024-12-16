@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -134,9 +135,13 @@ func (u *XUserCourseServiceImpl) UpdateCurso(request *request.UpdateCurso) error
 
 func (u *XUserCourseServiceImpl) AddCourseRating(userId string, courseName string, rating int) error {
 
-	_, err := u.UserService.FindById(userId)
+	res, err := u.UserService.FindById(userId)
 	if err != nil {
 		return err
+	}
+
+	if (res == response.UserResponse{}) {
+		return errors.New("usuario no válido")
 	}
 
 	_, err = u.CursoService.FindById(courseName)

@@ -81,42 +81,51 @@ func (r *ComentarioRepositoryImpl) FindByCurso(cursoID string) ([]model.Comentar
 	defer session.Close(ctx)
 
 	result, err := session.Run(ctx, `
-		MATCH (c:Comentario {curso_id: $id_curso})
-		RETURN c.comentario_id, c.usuario_id, c.nombre, c.fecha, c.titulo, c.detalle, c.likes, c.dislikes
-		ORDER BY c.likes DESC`,
+		MATCH (c:Course {CourseName: $id_curso})<-[r:COMENTA]-(u:User)
+		RETURN 
+			c.CourseName AS courseName,
+			u.UserId AS userId,
+			r.nombre AS nombre, 
+			r.fecha AS fecha, 
+			r.titulo AS titulo, 
+			r.detalle AS detalle, 
+			r.likes AS likes, 
+			r.dislikes AS dislikes
+		ORDER BY r.likes DESC`,
 		map[string]interface{}{
 			"id_curso": cursoID,
-		})
-
+		},
+	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to find comments: %w", err)
 	}
 
 	var comentarios []model.ComentarioCurso
+
+	// Iterar sobre los resultados
 	for result.Next(ctx) {
 		record := result.Record()
 
-		// Recuperar y convertir valores
-		comentarioID, _ := record.Get("c.comentario_id")
-		usuarioID, _ := record.Get("c.usuario_id")
-		nombre, _ := record.Get("c.nombre")
-		fecha, _ := record.Get("c.fecha")
-		titulo, _ := record.Get("c.titulo")
-		detalle, _ := record.Get("c.detalle")
-		likes, _ := record.Get("c.likes")
-		dislikes, _ := record.Get("c.dislikes")
+		// Obtener valores del registro
+		courseName, _ := record.Get("courseName")
+		userId, _ := record.Get("userId")
+		nombre, _ := record.Get("nombre")
+		fecha, _ := record.Get("fecha")
+		titulo, _ := record.Get("titulo")
+		detalle, _ := record.Get("detalle")
+		likes, _ := record.Get("likes")
+		dislikes, _ := record.Get("dislikes")
 
 		// Crear el comentario y añadirlo a la lista
 		comentarios = append(comentarios, model.ComentarioCurso{
-			ComentarioID: comentarioID.(string),
-			IdCurso:      cursoID,
-			IdUsuario:    usuarioID.(string),
-			Nombre:       nombre.(string),
-			Fecha:        fecha.(string),
-			Titulo:       titulo.(string),
-			Detalle:      detalle.(string),
-			Likes:        int(likes.(int64)),
-			Dislikes:     int(dislikes.(int64)),
+			IdUsuario: userId.(string),
+			IdCurso:   courseName.(string),
+			Nombre:    nombre.(string),
+			Fecha:     fecha.(string),
+			Titulo:    titulo.(string),
+			Detalle:   detalle.(string),
+			Likes:     int(likes.(int64)),
+			Dislikes:  int(dislikes.(int64)),
 		})
 	}
 

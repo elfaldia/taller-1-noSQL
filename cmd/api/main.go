@@ -68,7 +68,7 @@ func main() {
 	comentarioClaseService, _ := service.NewComentarioClaseServiceImpl(comentarioClaseRepository, claseService, validate)
 	comentarioClaseController := controller.NewComentarioClaseController(comentarioClaseService)
 
-	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, ComentarioRepository, validate, db, unidadService, claseService)
+	cursoService, _ := service.NewCursoServiceImpl(cursoRepository, ComentarioRepository, validate, db, unidadService, claseService, userService)
 	cursoController := controller.NewCursoController(cursoService, comentarioClaseService, claseService)
 	comentarioController := controller.NewComentarioController(cursoService)
 

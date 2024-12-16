@@ -5,3 +5,5 @@ bin/main.exe
 /bin
 bin/build-errors.log
 bin/main.exe
+bin/main.exe
+bin/build-errors.log

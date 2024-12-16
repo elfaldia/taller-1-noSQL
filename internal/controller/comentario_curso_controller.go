@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/elfaldia/taller-noSQL/internal/model"
+	"github.com/elfaldia/taller-noSQL/internal/response"
 	"github.com/elfaldia/taller-noSQL/internal/service"
 	"github.com/gin-gonic/gin"
 )
@@ -36,9 +37,16 @@ func (c *ComentarioController) GetComentariosByCurso(ctx *gin.Context) {
 	cursoID := ctx.Param("curso_id")
 	comentarios, err := c.ComentarioService.GetComentariosByCursoId(cursoID)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, response.ErrorResponse{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, comentarios)
+	ctx.JSON(http.StatusOK, response.Response{
+		Code:   200,
+		Status: "OK",
+		Data:   comentarios,
+	})
 }
