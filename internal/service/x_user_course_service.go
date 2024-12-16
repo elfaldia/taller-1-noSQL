@@ -144,6 +144,10 @@ func (u *XUserCourseServiceImpl) AddCourseRating(userId string, courseName strin
 		return errors.New("usuario no válido")
 	}
 
+	if rating < 0 || rating > 5 {
+		return errors.New("rating no válido, debe ser entre 0 y 5")
+	}
+
 	_, err = u.CursoService.FindById(courseName)
 	if err != nil {
 		return err

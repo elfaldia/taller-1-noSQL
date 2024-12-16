@@ -8,6 +8,6 @@ type ComentarioCurso struct {
 	Fecha        string `json:"fecha" bson:"fecha" binding:"required"`
 	Titulo       string `json:"titulo" bson:"titulo" binding:"required"`
 	Detalle      string `json:"detalle" bson:"detalle" binding:"required"`
-	Likes        int    `json:"likes" bson:"likes" binding:"required"`
-	Dislikes     int    `json:"dislikes" bson:"dislikes" binding:"required"`
+	Likes        int    `json:"likes" bson:"likes"`
+	Dislikes     int    `json:"dislikes" bson:"dislikes"`
 }
